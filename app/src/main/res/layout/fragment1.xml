@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffffb"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:title="@string/app_name"
+        app:titleTextColor="@color/whiteText">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/searchButton"
+            android:layout_weight="5"
+            android:background="@color/whiteText"
+            android:paddingRight="10dp">
+            //TODO
+
+            <ImageView
+                android:id="@+id/serarchImage"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_find_courier" />
+
+            <EditText
+                android:id="@+id/inputCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/scanImage"
+                android:layout_toRightOf="@+id/serarchImage"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="请输入单号"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/blackText"
+                android:textColorHint="@color/hintText"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/scanImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/pop_qrcode" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/searchButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/searchView"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/whiteText"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>
