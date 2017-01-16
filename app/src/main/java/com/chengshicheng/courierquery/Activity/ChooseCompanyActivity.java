@@ -122,6 +122,7 @@ public class ChooseCompanyActivity extends BaseActivity {
             case R.id.searchButton:
                 doQueryAPI(expCode, expNO);
                 break;
+
         }
     }
 
