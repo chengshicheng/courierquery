@@ -1,7 +1,6 @@
 package com.chengshicheng.courierquery.Activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 
 import com.chengshicheng.courierquery.DialogUtils;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.ResposeBean.StringUtils;
+import com.chengshicheng.courierquery.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 /**
@@ -29,6 +28,8 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
     private TextView searchButton;
 
     private static String number;
+
+    private int requestCode = 100;
 
 
     @Nullable
@@ -61,7 +62,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 if (!StringUtils.isEmpty(number)) {
                     intent.putExtra("requestType", 1);
                     intent.putExtra("requestNumber", number);
-                    startActivity(intent);
+                    startActivityForResult(intent, requestCode);
                 } else {
                     DialogUtils.ShowToast("别瞎几把点啊");
                 }
@@ -69,35 +70,15 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
             case R.id.scanImage:
                 DialogUtils.ShowToast("paizhao");
                 intent.putExtra("requestType", 2);
-                startActivity(intent);
+                startActivityForResult(intent, requestCode);
                 break;
-            default:efaut:
-            break;
+            default:
+                efaut:
+                break;
 
         }
 
 
-    }
-
-    /**
-     * Fragment跳转到扫描二维码界面
-     * https://github.com/journeyapps/zxing-android-embedded
-     */
-    private void toCustomScanActivity() {
-//         zxinging自带的扫描界面
-//        IntentIntegrator.forSupportFragment(Fragment1.this).initiateScan();
-
-        //重定义zxing的扫描界面 CustomScanActivity
-        IntentIntegrator integrator = IntentIntegrator.forSupportFragment(Fragment1.this);
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
-        integrator.setPrompt("Scan a barcode");
-        integrator.setCameraId(0);  // Use a specific camera of the device
-        integrator.setBeepEnabled(true);
-        integrator.setOrientationLocked(false);
-        integrator.setPrompt("");
-        integrator.setCaptureActivity(CustomScanActivity.class);
-        integrator.setBarcodeImageEnabled(true);
-        integrator.initiateScan();
     }
 
     @Override

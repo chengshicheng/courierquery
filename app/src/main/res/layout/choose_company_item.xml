@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/comanyImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/aap" />
+
+    <TextView
+        android:id="@+id/comanyText"
+        android:layout_width="0dp"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:textSize="18sp"
+        android:text="阿斯不好的护肤"
+        android:textColor="@color/blackText"
+        android:paddingLeft="10dp" />
+
+    <ImageView
+        android:id="@+id/rightImage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/a7o" />
+
+
+</LinearLayout>

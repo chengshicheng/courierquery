@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffffb"
+    android:background="@color/listviewbg"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -58,13 +58,13 @@
 
             <ImageView
                 android:id="@+id/scanImage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/pop_qrcode" />
+                android:src="@drawable/img_barcode" />
 
         </RelativeLayout>
 
