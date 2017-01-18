@@ -29,7 +29,7 @@ public class OrderDistinguishAPI {
      */
     public static String getCompanyByJson(String expNo) throws Exception {
         String requestData = "{'LogisticCode':'" + expNo + "'}";
-        LogUtil.PrintDebug("单号识别RequestData：" + requestData);
+        LogUtil.PrintDebug("单号识别RequestData:" + requestData);
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("RequestData", urlEncoder(requestData, "UTF-8"));

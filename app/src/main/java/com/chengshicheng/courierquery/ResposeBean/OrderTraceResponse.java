@@ -35,7 +35,7 @@ public class OrderTraceResponse {
      */
     private String Reason;
     /**
-     * 物流状态：2-在途中,3-签收,4-问题件
+     * 物流状态：2-在途中,3-签收,4-问题件  //0?
      */
     private String State;
     /**

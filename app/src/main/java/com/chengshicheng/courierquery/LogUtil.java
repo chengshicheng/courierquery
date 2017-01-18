@@ -14,15 +14,15 @@ public class LogUtil {
      */
     public static final boolean isDebug = true;
 
-    private static final String VERBOSE = "v";
+    public static final String VERBOSE = "v";
 
-    private static final String DEBUG = "d";
+    public static final String DEBUG = "d";
 
-    private static final String INFO = "i";
+    public static final String INFO = "i";
 
-    private static final String WARN = "w";
+    public static final String WARN = "w";
 
-    private static final String ERROR = "E";
+    public static final String ERROR = "E";
 
     public static String APPTag = "courierquery";
 

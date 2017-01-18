@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="tabbackground">#FCFCFC</color>
     <color name="listviewbg">#EBEBEB</color>
-    <color name="whiteText">#ffffffff</color>
+    <color name="whiteText">#FFFFFF</color>
     <color name="blackText">#130c0e</color>
     <color name="hintText">#d1c7b7</color>
     <color name="greyText">#636363</color>

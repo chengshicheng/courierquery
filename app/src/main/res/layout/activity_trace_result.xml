@@ -23,9 +23,11 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:id="@+id/listView"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"></ListView>
+        android:textColor="@color/blackText"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/result" />
+
 </LinearLayout>

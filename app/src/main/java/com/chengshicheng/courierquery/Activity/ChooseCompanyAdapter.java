@@ -65,7 +65,6 @@ public class ChooseCompanyAdapter extends BaseAdapter {
         } else {
             return shipperBean.size();
         }
-//        return 3;
     }
 
     public class ViewHolder {

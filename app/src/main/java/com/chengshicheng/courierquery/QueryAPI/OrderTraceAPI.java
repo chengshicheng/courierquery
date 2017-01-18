@@ -36,7 +36,7 @@ public class OrderTraceAPI {
 //        String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
         Gson gson = new Gson();
         String requestData = gson.toJson(new OrderTraceRequestData().getRequestData(expCode, expNo));
-        LogUtil.PrintDebug(requestData);
+        LogUtil.PrintDebug("即时查询RequestData:" + requestData);
 
 
         Map<String, String> params = new HashMap<String, String>();

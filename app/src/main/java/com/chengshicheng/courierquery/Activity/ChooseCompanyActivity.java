@@ -239,7 +239,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                     }
 
                 } catch (Exception e) {
-                    LogUtil.PrintError("doQueryAPI Error", e);
+                    LogUtil.PrintError("OrderDistinguishAPI Error", e);
                     message.what = SYSTEM_ERROR;
                 } finally {
                     handler.sendMessage(message);

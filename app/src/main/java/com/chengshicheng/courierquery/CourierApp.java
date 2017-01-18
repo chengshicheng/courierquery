@@ -14,7 +14,8 @@ public class CourierApp extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+        CrashHandler handler = CrashHandler.getInstance();
+        handler.init(this);
     }
 
     public static Context getContext() {
