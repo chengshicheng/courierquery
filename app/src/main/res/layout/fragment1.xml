@@ -28,13 +28,13 @@
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/searchButton"
             android:layout_weight="5"
-            android:background="@color/whiteText"
+            android:background="@drawable/shape_corner"
             android:paddingRight="10dp">
             //TODO
 
             <ImageView
                 android:id="@+id/serarchImage"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/icon_find_courier" />
@@ -58,8 +58,8 @@
 
             <ImageView
                 android:id="@+id/scanImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"

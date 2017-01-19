@@ -64,16 +64,14 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                     intent.putExtra("requestNumber", number);
                     startActivityForResult(intent, requestCode);
                 } else {
-                    DialogUtils.ShowToast("别瞎几把点啊");
+                    DialogUtils.ShowToast("请输入单号");
                 }
                 break;
             case R.id.scanImage:
-                DialogUtils.ShowToast("paizhao");
                 intent.putExtra("requestType", 2);
                 startActivityForResult(intent, requestCode);
                 break;
             default:
-                efaut:
                 break;
 
         }

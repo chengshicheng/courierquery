@@ -54,11 +54,34 @@ public class TraceResultActivity extends BaseActivity {
         }
     };
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trace_result);
+        initViews();
+        String expCode = getIntent().getStringExtra("expCode");
+        String expNO = getIntent().getStringExtra("expNO");
+        doQueryTraceAPI(expCode, expNO);
+    }
+
+    private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        textView = (TextView) findViewById(R.id.result);
+    }
+
+
     private void showTraces(OrderTraceResponse response) {
         StringBuffer result = new StringBuffer();
         //物流状态：2-在途中,3-签收,4-问题件
-//        String state = (null == response.getState()) ? "" : response.getState();
-        String state = null;
+        String state = (null == response.getState()) ? "" : response.getState();
         ArrayList<OrderTraces> traces = response.getTraces();
         switch (state) {
             case "2":
@@ -86,31 +109,6 @@ public class TraceResultActivity extends BaseActivity {
 
         textView.setText(result.toString());
     }
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trace_result);
-        initViews();
-        String expCode = getIntent().getStringExtra("expCode");
-        String expNO = getIntent().getStringExtra("expNO");
-        doQueryTraceAPI(expCode, expNO);
-    }
-
-    private void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.back);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        textView = (TextView) findViewById(R.id.result);
-    }
-
 
     /**
      * doQueryAPI("YD", "1000797534377");

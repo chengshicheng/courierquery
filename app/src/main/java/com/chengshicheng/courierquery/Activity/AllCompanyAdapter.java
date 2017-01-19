@@ -16,11 +16,11 @@ import java.util.ArrayList;
 /**
  * Created by chengshicheng on 2017/1/16.
  */
-public class ChooseCompanyAdapter extends BaseAdapter {
+public class AllCompanyAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<ShipperBean> shipperBean = new ArrayList<ShipperBean>();
 
-    public ChooseCompanyAdapter(Context context, ArrayList<ShipperBean> shippers) {
+    public AllCompanyAdapter(Context context, ArrayList<ShipperBean> shippers) {
         this.mInflater = LayoutInflater.from(context);
         this.shipperBean = shippers;
     }

@@ -8,11 +8,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.chengshicheng.courierquery.DialogUtils;
 import com.chengshicheng.courierquery.LogUtil;
 import com.chengshicheng.courierquery.QueryAPI.OrderDistinguishAPI;
 import com.chengshicheng.courierquery.R;
@@ -39,11 +39,12 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     /**
      * 快递单号
      */
-    private static String expNO = "";
+    public static String expNO = "";
 
     private static ArrayList<ShipperBean> shippers = new ArrayList<ShipperBean>();//适配器数据源
     private static ArrayList<ShipperBean> scanShippers;//单号识别返回的的结果
     private ListView listView;
+    private View mSlideBar;
     private static ChooseCompanyAdapter adapter;
     /**
      * 单号查询失败
@@ -69,6 +70,8 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
             switch (msg.what) {
                 case QUERY_FAILED:
                     int errCode = (int) (msg.obj);
+                    listView.setVisibility(View.GONE);
+                    //查询失败,显示所有列表
                     break;
                 case EMPTY_SHIPPER:
                     break;
@@ -117,18 +120,19 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
         adapter = new ChooseCompanyAdapter(ChooseCompanyActivity.this, shippers);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
     }
 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DialogUtils.ShowToast("点击" + position);
         Intent intent = new Intent();
         intent.setClass(this, TraceResultActivity.class);
         intent.putExtra("expCode", scanShippers.get(position).getShipperCode());
         intent.putExtra("expNO", expNO);
         startActivity(intent);
     }
+
 
     private void doRequest(Intent intent) {
         requestCode = intent.getIntExtra("requestType", 0);
@@ -237,7 +241,6 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                         message.what = QUERY_FAILED;
                         message.obj = response.getCode();//失败错误码
                     }
-
                 } catch (Exception e) {
                     LogUtil.PrintError("OrderDistinguishAPI Error", e);
                     message.what = SYSTEM_ERROR;
