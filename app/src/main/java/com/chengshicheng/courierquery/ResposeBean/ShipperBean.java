@@ -15,6 +15,14 @@ public class ShipperBean {
      * 快递公司名称
      */
     private String ShipperName;
+    public  ShipperBean(){
+
+    }
+
+    public ShipperBean(String code, String name) {
+        this.ShipperCode = code;
+        this.ShipperName = name;
+    }
 
     public String getShipperCode() {
         return ShipperCode;
@@ -22,5 +30,13 @@ public class ShipperBean {
 
     public String getShipperName() {
         return ShipperName;
+    }
+
+    public void setShipperCode(String shipperCode) {
+        ShipperCode = shipperCode;
+    }
+
+    public void setShipperName(String shipperName) {
+        ShipperName = shipperName;
     }
 }

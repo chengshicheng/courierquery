@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.chengshicheng.courierquery.DialogUtils;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.StringUtils;
-import com.google.zxing.integration.android.IntentIntegrator;
 
 /**
  * Created by chengshicheng on 2017/1/9.
@@ -68,6 +67,7 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.scanImage:
+                intputCode.setText("");
                 intent.putExtra("requestType", 2);
                 startActivityForResult(intent, requestCode);
                 break;

@@ -10,4 +10,5 @@
     <color name="hintText">#d1c7b7</color>
     <color name="greyText">#636363</color>
     <color name="listSelected">#D9D9D9</color>
+    <color name="listTitle">#878787</color>
 </resources>

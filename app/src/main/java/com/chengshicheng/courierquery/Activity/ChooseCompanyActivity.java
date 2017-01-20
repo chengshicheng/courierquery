@@ -8,11 +8,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.chengshicheng.courierquery.CompanyUtils;
 import com.chengshicheng.courierquery.LogUtil;
 import com.chengshicheng.courierquery.QueryAPI.OrderDistinguishAPI;
 import com.chengshicheng.courierquery.R;
@@ -33,27 +33,20 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     private static int requestCode;
 
     /**
-     * 快递公司编号
-     */
-    private static String expCode = "YD";
-    /**
      * 快递单号
      */
     public static String expNO = "";
 
-    private static ArrayList<ShipperBean> shippers = new ArrayList<ShipperBean>();//适配器数据源
     private static ArrayList<ShipperBean> scanShippers;//单号识别返回的的结果
-    private ListView listView;
-    private View mSlideBar;
-    private static ChooseCompanyAdapter adapter;
+    private ListView listView, commonListView;
+    private TopCompanyAdapter topadapter;//顶部推荐快递
+    private CommonCompanyAdapter commonadapter;//常用快递
+    private static ArrayList<ShipperBean> topList = new ArrayList<ShipperBean>();//top适配器数据源
+    private static ArrayList<ShipperBean> commList = new ArrayList<ShipperBean>();//常用快递适配器数据源
     /**
      * 单号查询失败
      */
     private static final int QUERY_FAILED = 0;
-    /**
-     * 单号查询成功，但是shipper为空
-     */
-    private static final int EMPTY_SHIPPER = 1;
     /**
      * 单号查询成功
      */
@@ -71,25 +64,47 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                 case QUERY_FAILED:
                     int errCode = (int) (msg.obj);
                     listView.setVisibility(View.GONE);
+                    LogUtil.PrintDebug("单号识别结果失败，错误码:" + errCode);
                     //查询失败,显示所有列表
-                    break;
-                case EMPTY_SHIPPER:
                     break;
                 case QUERY_SUCCESS:
                     scanShippers = (ArrayList<ShipperBean>) msg.obj;
-                    LogUtil.PrintDebug("ShipperBean size = " + scanShippers.size());
+                    LogUtil.PrintDebug("单号识别结果size =" + scanShippers.size());
                     refreshListView();
                     break;
                 default:
+                    listView.setVisibility(View.GONE);
                     break;
             }
         }
     };
 
     private void refreshListView() {
-        shippers.clear();
-        shippers.addAll(scanShippers);
-        adapter.notifyDataSetChanged();
+        topList.clear();
+        topList.addAll(scanShippers);
+        filterList(topList, commList);
+        topadapter.notifyDataSetChanged();
+        commonadapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 从commList移除topList数据，避免界面出现重复数据
+     * 由于ShipperName可能不一致，以ShipperCode为标准
+     *
+     * @param topList  要移除的数据
+     * @param commList
+     */
+    private void filterList(ArrayList<ShipperBean> topList, ArrayList<ShipperBean> commList) {
+        ArrayList<ShipperBean> tempList = new ArrayList<ShipperBean>();
+        for (ShipperBean commonBean : commList) {
+            for (ShipperBean topBean : topList) {
+                if (commonBean.getShipperCode().equals(topBean.getShipperCode())) {
+                    tempList.add(commonBean);
+                }
+            }
+
+        }
+        commList.removeAll(tempList);
     }
 
 
@@ -97,6 +112,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_company);
+        commList = new CompanyUtils().getCommonList();
         initViews();
         Intent intent = getIntent();
         doRequest(intent);
@@ -117,10 +133,16 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
         listView = (ListView) findViewById(R.id.listView);
         listView.setDivider(new ColorDrawable(Color.GRAY));
         listView.setDividerHeight(1);
-        adapter = new ChooseCompanyAdapter(ChooseCompanyActivity.this, shippers);
-        listView.setAdapter(adapter);
+        topadapter = new TopCompanyAdapter(ChooseCompanyActivity.this, topList);
+        listView.setAdapter(topadapter);
         listView.setOnItemClickListener(this);
 
+        commonListView = (ListView) findViewById(R.id.allListView);
+        commonListView.setDivider(new ColorDrawable(Color.GRAY));
+        commonListView.setDividerHeight(1);
+        commonadapter = new CommonCompanyAdapter(ChooseCompanyActivity.this, commList);
+        commonListView.setAdapter(commonadapter);
+        commonListView.setOnItemClickListener(this);
     }
 
 
@@ -128,8 +150,14 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent();
         intent.setClass(this, TraceResultActivity.class);
-        intent.putExtra("expCode", scanShippers.get(position).getShipperCode());
-        intent.putExtra("expNO", expNO);
+        if (parent == listView) {
+            intent.putExtra("expCode", scanShippers.get(position).getShipperCode());
+            intent.putExtra("expNO", expNO);
+        } else if (parent == commonListView) {
+            intent.putExtra("expCode", commList.get(position).getShipperCode());
+            intent.putExtra("expNO", expNO);
+        }
+
         startActivity(intent);
     }
 
@@ -140,7 +168,6 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
         if (1 == requestCode) {
             expNO = intent.getStringExtra("requestNumber");
             LogUtil.PrintDebug("requestNumber = " + expNO);
-            //// TODO: 2017/1/16  查询完毕后刷新界面
             //查询快递公司
             doQueryCompany(expNO);
         } else if (2 == requestCode) {
@@ -231,12 +258,8 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                     if (response.isSuccess()) {
                         //查询成功
                         ArrayList<ShipperBean> shippers = response.getShippers();
-                        if (shippers.size() == 0) {
-                            message.what = EMPTY_SHIPPER;
-                        } else {
-                            message.what = QUERY_SUCCESS;
-                            message.obj = shippers;
-                        }
+                        message.what = QUERY_SUCCESS;
+                        message.obj = shippers;
                     } else {
                         message.what = QUERY_FAILED;
                         message.obj = response.getCode();//失败错误码
