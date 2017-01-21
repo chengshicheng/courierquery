@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.chengshicheng.courierquery.Utils.LogUtil;
+
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;

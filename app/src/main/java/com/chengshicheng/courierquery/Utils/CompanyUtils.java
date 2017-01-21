@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery;
+package com.chengshicheng.courierquery.Utils;
 
 import com.chengshicheng.courierquery.ResposeBean.ShipperBean;
 

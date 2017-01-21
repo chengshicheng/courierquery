@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chengshicheng.courierquery.DialogUtils;
+import com.chengshicheng.courierquery.Utils.DialogUtils;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.StringUtils;
+import com.chengshicheng.courierquery.Utils.StringUtils;
 
 /**
  * Created by chengshicheng on 2017/1/9.
@@ -58,12 +58,15 @@ public class Fragment1 extends Fragment implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.searchButton:
-                if (!StringUtils.isEmpty(number)) {
+                if (StringUtils.isEmpty(number)) {
+                    DialogUtils.ShowToast("请输入单号");
+                } else if (number.length() < 6 || number.length() > 50) {
+                    DialogUtils.ShowToast("单号格式错误");
+                }
+                else {
                     intent.putExtra("requestType", 1);
                     intent.putExtra("requestNumber", number);
                     startActivityForResult(intent, requestCode);
-                } else {
-                    DialogUtils.ShowToast("请输入单号");
                 }
                 break;
             case R.id.scanImage:

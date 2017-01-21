@@ -1,18 +1,16 @@
 package com.chengshicheng.courierquery.QueryAPI;
 
-import com.chengshicheng.courierquery.LogUtil;
+import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.RequestBean.OrderTraceRequestData;
-import com.chengshicheng.courierquery.StringUtils;
-import com.chengshicheng.courierquery.WebService;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.chengshicheng.courierquery.StringUtils.AppKey;
-import static com.chengshicheng.courierquery.StringUtils.EBusinessID;
-import static com.chengshicheng.courierquery.StringUtils.encrypt;
-import static com.chengshicheng.courierquery.StringUtils.urlEncoder;
+import static com.chengshicheng.courierquery.Utils.StringUtils.AppKey;
+import static com.chengshicheng.courierquery.Utils.StringUtils.EBusinessID;
+import static com.chengshicheng.courierquery.Utils.StringUtils.encrypt;
+import static com.chengshicheng.courierquery.Utils.StringUtils.urlEncoder;
 import static com.chengshicheng.courierquery.WebService.sendPost;
 
 /**

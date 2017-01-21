@@ -12,8 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.chengshicheng.courierquery.CompanyUtils;
-import com.chengshicheng.courierquery.LogUtil;
+import com.chengshicheng.courierquery.Utils.CompanyUtils;
+import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.QueryAPI.OrderDistinguishAPI;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.ResposeBean.OrderDistinguishResponse;
@@ -25,6 +25,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 
 /**
+ * 选择快递界面
  * Created by chengshicheng on 2017/1/12.
  */
 
@@ -102,7 +103,6 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                     tempList.add(commonBean);
                 }
             }
-
         }
         commList.removeAll(tempList);
     }
@@ -151,12 +151,13 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
         Intent intent = new Intent();
         intent.setClass(this, TraceResultActivity.class);
         if (parent == listView) {
-            intent.putExtra("expCode", scanShippers.get(position).getShipperCode());
-            intent.putExtra("expNO", expNO);
+            intent.putExtra("expCode", topList.get(position).getShipperCode());
+            intent.putExtra("expName", topList.get(position).getShipperName());
         } else if (parent == commonListView) {
             intent.putExtra("expCode", commList.get(position).getShipperCode());
-            intent.putExtra("expNO", expNO);
+            intent.putExtra("expName", commList.get(position).getShipperName());
         }
+        intent.putExtra("expNO", expNO);
 
         startActivity(intent);
     }

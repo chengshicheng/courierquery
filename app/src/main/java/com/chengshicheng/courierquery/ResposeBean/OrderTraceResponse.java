@@ -41,7 +41,7 @@ public class OrderTraceResponse {
     /**
      * 物流详情
      */
-    private ArrayList<OrderTraces> Traces;
+    private ArrayList<OrderTrace> Traces;
 
     public String getEBusinessID() {
         return EBusinessID;
@@ -71,7 +71,7 @@ public class OrderTraceResponse {
         return Success;
     }
 
-    public ArrayList<OrderTraces> getTraces() {
+    public ArrayList<OrderTrace> getTraces() {
         return Traces;
     }
 }

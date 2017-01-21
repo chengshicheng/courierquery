@@ -6,7 +6,7 @@ package com.chengshicheng.courierquery.ResposeBean;
  * Created by chengshicheng on 2017/1/15.
  * http://www.kdniao.com/api-track
  */
-public class OrderTraces {
+public class OrderTrace {
     /**
      * 时间
      */
@@ -19,6 +19,11 @@ public class OrderTraces {
      * 备注
      */
     private String Remark;
+
+    public OrderTrace(String time, String Station) {
+        this.AcceptTime = time;
+        this.AcceptStation = Station;
+    }
 
     public String getAcceptStation() {
         return AcceptStation;

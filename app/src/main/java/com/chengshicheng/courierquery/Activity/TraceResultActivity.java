@@ -3,29 +3,33 @@ package com.chengshicheng.courierquery.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.chengshicheng.courierquery.LogUtil;
-import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
+import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.R;
+import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
 import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
-import com.chengshicheng.courierquery.ResposeBean.OrderTraces;
+import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-/*及时查询，显示物流结果
+/**
+ * 及时查询，显示物流结果
  * Created by chengshicheng on 2017/1/17.
  */
 
 public class TraceResultActivity extends BaseActivity {
-
-    private static TextView textView;
+    private TextView tvCompany, tvOrderNum, tvOrdrrState;
+    private String expCode, expName, expNO;
+    private static ListView lvTrace;
+    private TraceResultAdapter resultAdapter;
+    private ArrayList<OrderTrace> tracesList = new ArrayList<OrderTrace>();
 
 
     private static final int QUERY_FAILED = 0;
@@ -45,10 +49,12 @@ public class TraceResultActivity extends BaseActivity {
                     break;
                 case QUERY_FAILED:
                     OrderTraceResponse response_error = (OrderTraceResponse) msg.obj;
-                    textView.setText("查询失败" + response_error.getReason());
+                    tvOrdrrState.setText("查询失败：" + response_error.getReason());
+                    tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
                     break;
                 case API_EXCEPTION:
-                    textView.setText("服务器异常，请重试");
+                    tvOrdrrState.setText("查询失败,请稍后查询");
+                    tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
                     break;
             }
         }
@@ -58,9 +64,10 @@ public class TraceResultActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trace_result);
+        expCode = getIntent().getStringExtra("expCode");
+        expName = getIntent().getStringExtra("expName");
+        expNO = getIntent().getStringExtra("expNO");
         initViews();
-        String expCode = getIntent().getStringExtra("expCode");
-        String expNO = getIntent().getStringExtra("expNO");
         doQueryTraceAPI(expCode, expNO);
     }
 
@@ -74,7 +81,15 @@ public class TraceResultActivity extends BaseActivity {
                 finish();
             }
         });
-        textView = (TextView) findViewById(R.id.result);
+
+        tvCompany = (TextView) findViewById(R.id.tvOrderCompany);
+        tvOrderNum = (TextView) findViewById(R.id.tvOrderNumber);
+        tvOrdrrState = (TextView) findViewById(R.id.tvOrderState);
+        tvCompany.setText("快递公司：" + expName);
+        tvOrderNum.setText("运单号码：" + expNO);
+        lvTrace = (ListView) findViewById(R.id.lvTrace);
+        resultAdapter = new TraceResultAdapter(this, tracesList);
+        lvTrace.setAdapter(resultAdapter);
     }
 
 
@@ -82,32 +97,27 @@ public class TraceResultActivity extends BaseActivity {
         StringBuffer result = new StringBuffer();
         //物流状态：2-在途中,3-签收,4-问题件
         String state = (null == response.getState()) ? "" : response.getState();
-        ArrayList<OrderTraces> traces = response.getTraces();
+        ArrayList<OrderTrace> traces = response.getTraces();
         switch (state) {
             case "2":
+                tvOrdrrState.setText("在途中");
             case "3":
-                if (traces.size() > 0) {
-                    result.append("查询成功" + "\r\n" + "\r\n");
-                    for (OrderTraces trace : traces) {
-                        result.append(trace.getAcceptTime());
-                        result.append("\r\n");
-                        result.append(trace.getAcceptStation());
-                        result.append("\r\n");
-                    }
-                } else {
-                    result.append("查询成功,暂无物流信息" + "\r\n" + "\r\n");
-                }
+                tvOrdrrState.setText("已签收");
                 break;
             case "4":
-                result.append("问题件" + "\r\n" + "\r\n");
+                tvOrdrrState.setText("问题件");
                 break;
             //0
             default:
-                result.append("未知状态,无物流信息" + "\r\n" + "\r\n");
+                tvOrdrrState.setText("没有物流信息，请检查单号");
                 break;
         }
+        tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
+        Collections.reverse(traces);
+        tracesList.addAll(traces);
+        resultAdapter.notifyDataSetChanged();
 
-        textView.setText(result.toString());
+
     }
 
     /**

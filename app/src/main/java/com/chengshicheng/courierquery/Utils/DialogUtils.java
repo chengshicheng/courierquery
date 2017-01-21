@@ -1,6 +1,8 @@
-package com.chengshicheng.courierquery;
+package com.chengshicheng.courierquery.Utils;
 
 import android.widget.Toast;
+
+import com.chengshicheng.courierquery.CourierApp;
 
 /**
  * Created by chengshicheng on 2017/1/15.
