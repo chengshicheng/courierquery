@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CourierQuery.iml" filepath="$PROJECT_DIR$/CourierQuery.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.chengshicheng.dao/com.chengshicheng.dao.iml" filepath="$PROJECT_DIR$/com.chengshicheng.dao/com.chengshicheng.dao.iml" />
     </modules>
   </component>
 </project>

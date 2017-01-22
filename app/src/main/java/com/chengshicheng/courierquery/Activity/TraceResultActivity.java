@@ -95,10 +95,12 @@ public class TraceResultActivity extends BaseActivity {
 
     private void showTraces(OrderTraceResponse response) {
         StringBuffer result = new StringBuffer();
-        //物流状态：2-在途中,3-签收,4-问题件
+        //物流状态：2-在途中,3-签收,4-问题件,0 暂无物流轨迹
         String state = (null == response.getState()) ? "" : response.getState();
         ArrayList<OrderTrace> traces = response.getTraces();
         switch (state) {
+            case "0":
+                tvOrdrrState.setText("暂无物流信息");
             case "2":
                 tvOrdrrState.setText("在途中");
             case "3":
@@ -107,7 +109,6 @@ public class TraceResultActivity extends BaseActivity {
             case "4":
                 tvOrdrrState.setText("问题件");
                 break;
-            //0
             default:
                 tvOrdrrState.setText("没有物流信息，请检查单号");
                 break;
