@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.GreenDao.GreenDaoHelper;
+import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
 import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
 import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
+import com.chengshicheng.greendao.gen.OrderQueryDao;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class TraceResultActivity extends BaseActivity {
     private static ListView lvTrace;
     private TraceResultAdapter resultAdapter;
     private ArrayList<OrderTrace> tracesList = new ArrayList<OrderTrace>();
+    private OrderQueryDao mOrderDao;
 
 
     private static final int QUERY_FAILED = 0;
@@ -46,6 +50,7 @@ public class TraceResultActivity extends BaseActivity {
                 case QUERY_SUCCESS:
                     OrderTraceResponse response = (OrderTraceResponse) msg.obj;
                     showTraces(response);
+                    insertToDataBase(response);
                     break;
                 case QUERY_FAILED:
                     OrderTraceResponse response_error = (OrderTraceResponse) msg.obj;
@@ -59,6 +64,20 @@ public class TraceResultActivity extends BaseActivity {
             }
         }
     };
+
+    /**
+     * 保存到数据库
+     *
+     * @param response
+     */
+    private void insertToDataBase(OrderTraceResponse response) {
+        mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
+        OrderQuery save = new OrderQuery(Long.valueOf(response.getLogisticCode()), response.getShipperCode(), expName, System.currentTimeMillis(), response.isSuccess(), response.getState(), "");
+        mOrderDao.insert(save);
+
+        OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
+        LogUtil.PrintDebug(query.getOrderNum() + "");
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
