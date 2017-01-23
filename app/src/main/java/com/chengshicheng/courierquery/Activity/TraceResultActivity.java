@@ -73,10 +73,13 @@ public class TraceResultActivity extends BaseActivity {
     private void insertToDataBase(OrderTraceResponse response) {
         mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
         OrderQuery save = new OrderQuery(Long.valueOf(response.getLogisticCode()), response.getShipperCode(), expName, System.currentTimeMillis(), response.isSuccess(), response.getState(), "");
-        mOrderDao.insert(save);
+        mOrderDao.insertOrReplace(save);
 
         OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
-        LogUtil.PrintDebug(query.getOrderNum() + "");
+        if (query != null) {
+            LogUtil.PrintDebug(query.getOrderNum() + "");
+        }
+
     }
 
     @Override

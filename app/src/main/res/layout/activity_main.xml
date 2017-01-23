@@ -2,26 +2,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/realtabcontent"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:theme="@style/AppTheme"
-        android:layout_weight="1" />
+    <!--<FrameLayout-->
+    <!--android:id="@+id/realtabcontent"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="0dip"-->
+    <!--android:theme="@style/AppTheme"-->
+    <!--android:layout_weight="1" />-->
 
-    <android.support.v4.app.FragmentTabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="fill_parent"
-        android:background="@color/tabbackground"
-        android:layout_height="55dp">
+    <!--<android.support.v4.app.FragmentTabHost-->
+    <!--android:id="@android:id/tabhost"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:background="@color/tabbackground"-->
+    <!--android:layout_height="55dp">-->
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
+    <!--<FrameLayout-->
+    <!--android:id="@android:id/tabcontent"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_weight="0" />-->
+    <!--</android.support.v4.app.FragmentTabHost>-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0" />
-    </android.support.v4.app.FragmentTabHost>
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@+id/searchButton"
+            android:layout_weight="5"
+            android:background="@drawable/shape_corner"
+            android:paddingRight="10dp">
+            //TODO
 
+            <ImageView
+                android:id="@+id/serarchImage"
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_find_courier" />
+
+            <EditText
+                android:id="@+id/inputCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/scanImage"
+                android:layout_toRightOf="@+id/serarchImage"
+                android:background="@null"
+                android:ellipsize="end"
+                android:hint="请输入单号"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/blackText"
+                android:textColorHint="@color/hintText"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/scanImage"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/img_barcode" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/searchButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/searchView"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/whiteText"
+            android:textSize="18sp" />
+    </LinearLayout>
 </LinearLayout>
