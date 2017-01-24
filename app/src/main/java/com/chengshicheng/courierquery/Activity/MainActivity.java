@@ -3,6 +3,8 @@ package com.chengshicheng.courierquery.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ public class MainActivity extends BaseActivity {
     private EditText intputCode;
 
     private ImageView sacnImage;
+    private ImageView menu;
 
     private TextView searchButton;
 
@@ -31,15 +34,12 @@ public class MainActivity extends BaseActivity {
 
     private void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // App Logo
-        toolbar.setLogo(R.drawable.common_google_signin_btn_icon_light_disabled);
-        // Title
-        toolbar.setTitle("快递助手");
-        // Sub Title
-//        toolbar.setSubtitle("Sub title");
         setSupportActionBar(toolbar);
-//        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
-        toolbar.setOnMenuItemClickListener(null);
+        //隐藏Toolbar的标题
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        menu = (ImageView) findViewById(R.id.menu);
+        menu.setOnClickListener(this);
         intputCode = (EditText) findViewById(R.id.inputCode);
         sacnImage = (ImageView) findViewById(R.id.scanImage);
         searchButton = (TextView) findViewById(R.id.searchButton);
@@ -71,13 +71,37 @@ public class MainActivity extends BaseActivity {
                 intent.putExtra("requestType", 2);
                 startActivityForResult(intent, requestCode);
                 break;
+            case R.id.menu:
+                DialogUtils.ShowToast("menu");
+                break;
             default:
                 break;
 
         }
     }
 
-//    private FragmentTabHost mTabHost;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_toobar_right, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                //Action you want
+                DialogUtils.ShowToast("menu_search");
+                return true;
+            case R.id.menu_scan:
+                //Action you want
+                DialogUtils.ShowToast("menu_scan");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    //    private FragmentTabHost mTabHost;
 //
 //    private LayoutInflater mLayoutInflater;
 //
