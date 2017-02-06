@@ -2,27 +2,23 @@ package com.chengshicheng.courierquery.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.Utils.DialogUtils;
-import com.chengshicheng.courierquery.Utils.StringUtils;
 
 public class MainActivity extends BaseActivity {
-    private EditText intputCode;
 
-    private ImageView sacnImage;
     private ImageView menu;
-
-    private TextView searchButton;
-
-    private static String number;
+    private SearchView searchView;
 
     private int requestCode = 100;
 
@@ -40,37 +36,13 @@ public class MainActivity extends BaseActivity {
 
         menu = (ImageView) findViewById(R.id.menu);
         menu.setOnClickListener(this);
-        intputCode = (EditText) findViewById(R.id.inputCode);
-        sacnImage = (ImageView) findViewById(R.id.scanImage);
-        searchButton = (TextView) findViewById(R.id.searchButton);
 
-        sacnImage.setOnClickListener(this);
-        searchButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        number = intputCode.getText().toString();
-        Intent intent = new Intent();
-        intent.setClass(this, ChooseCompanyActivity.class);
 
         switch (v.getId()) {
-            case R.id.searchButton:
-                if (StringUtils.isEmpty(number)) {
-                    DialogUtils.ShowToast("请输入单号");
-                } else if (number.length() < 6 || number.length() > 50) {
-                    DialogUtils.ShowToast("单号格式错误");
-                } else {
-                    intent.putExtra("requestType", 1);
-                    intent.putExtra("requestNumber", number);
-                    startActivityForResult(intent, requestCode);
-                }
-                break;
-            case R.id.scanImage:
-                intputCode.setText("");
-                intent.putExtra("requestType", 2);
-                startActivityForResult(intent, requestCode);
-                break;
             case R.id.menu:
                 DialogUtils.ShowToast("menu");
                 break;
@@ -82,26 +54,60 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toobar_right, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_toobar_right, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_search);//在菜单中找到对应控件的item
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(MainActivity.this, ChooseCompanyActivity.class);
+                if (query.length() < 6 || query.length() > 50) {
+                    DialogUtils.ShowToast("单号格式错误");
+                } else {
+                    intent.putExtra("requestType", 1);
+                    intent.putExtra("requestNumber", query);
+                    startActivityForResult(intent, requestCode);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                //Action you want
-                DialogUtils.ShowToast("menu_search");
-                return true;
-            case R.id.menu_scan:
-                //Action you want
-                DialogUtils.ShowToast("menu_scan");
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        if (searchView != null) {
+            searchView.setFocusable(true);
+            searchView.setFocusableInTouchMode(true);
+            searchView.clearFocus();  //获取焦点
         }
     }
-    //    private FragmentTabHost mTabHost;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_scan) {
+            DialogUtils.ShowToast("menu_scan");
+            Intent intent = new Intent();
+            intent.setClass(this, ChooseCompanyActivity.class);
+            intent.putExtra("requestType", 2);
+            startActivityForResult(intent, requestCode);
+        }
+        return true;
+
+    }
+}
+
+
+//    private FragmentTabHost mTabHost;
 //
 //    private LayoutInflater mLayoutInflater;
 //
@@ -138,4 +144,3 @@ public class MainActivity extends BaseActivity {
 //    }
 
 
-}
