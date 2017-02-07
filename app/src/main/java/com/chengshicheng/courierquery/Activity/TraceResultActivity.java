@@ -30,6 +30,7 @@ import java.util.Collections;
 public class TraceResultActivity extends BaseActivity {
     private TextView tvCompany, tvOrderNum, tvOrdrrState;
     private String expCode, expName, expNO;
+    private static String state;
     private static ListView lvTrace;
     private TraceResultAdapter resultAdapter;
     private ArrayList<OrderTrace> tracesList = new ArrayList<OrderTrace>();
@@ -50,7 +51,6 @@ public class TraceResultActivity extends BaseActivity {
                 case QUERY_SUCCESS:
                     OrderTraceResponse response = (OrderTraceResponse) msg.obj;
                     showTraces(response);
-                    insertToDataBase(response);
                     break;
                 case QUERY_FAILED:
                     OrderTraceResponse response_error = (OrderTraceResponse) msg.obj;
@@ -72,7 +72,14 @@ public class TraceResultActivity extends BaseActivity {
      */
     private void insertToDataBase(OrderTraceResponse response) {
         mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
-        OrderQuery save = new OrderQuery(Long.valueOf(response.getLogisticCode()), response.getShipperCode(), expName, System.currentTimeMillis(), response.isSuccess(), response.getState(), "");
+        OrderQuery save = new OrderQuery();
+        save.setOrderNum(Long.valueOf(response.getLogisticCode()));
+        save.setOrderCode(response.getShipperCode());
+        save.setOrderName(expName);
+        save.setLastQueryTime(System.currentTimeMillis());
+        save.setIsSuccess(response.isSuccess());
+        save.setState(response.getState());
+        save.setTraces2Json("");
         mOrderDao.insertOrReplace(save);
 
         OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
@@ -118,18 +125,24 @@ public class TraceResultActivity extends BaseActivity {
     private void showTraces(OrderTraceResponse response) {
         StringBuffer result = new StringBuffer();
         //物流状态：2-在途中,3-签收,4-问题件,0 暂无物流轨迹
-        String state = (null == response.getState()) ? "" : response.getState();
+        state = (null == response.getState()) ? "" : response.getState();
         ArrayList<OrderTrace> traces = response.getTraces();
         switch (state) {
             case "0":
                 tvOrdrrState.setText("暂无物流信息");
+                insertToDataBase(response);
+                break;
             case "2":
                 tvOrdrrState.setText("在途中");
+                insertToDataBase(response);
+                break;
             case "3":
-                tvOrdrrState.setText("已签收");
+
+                insertToDataBase(response);
                 break;
             case "4":
                 tvOrdrrState.setText("问题件");
+                insertToDataBase(response);
                 break;
             default:
                 tvOrdrrState.setText("没有物流信息，请检查单号");
@@ -181,5 +194,15 @@ public class TraceResultActivity extends BaseActivity {
             }
         };
         new Thread(queryTrace).start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (state.isEmpty())
+            setResult(RESULT_CANCELED);
+        else {
+            setResult(RESULT_OK);
+        }
+        super.onBackPressed();
     }
 }

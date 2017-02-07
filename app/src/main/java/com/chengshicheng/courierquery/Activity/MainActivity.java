@@ -11,14 +11,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.Utils.DialogUtils;
+import com.chengshicheng.courierquery.Utils.LogUtil;
 
 public class MainActivity extends BaseActivity {
 
     private ImageView menu;
     private SearchView searchView;
+    private MenuItem searchItem;
 
     private int requestCode = 100;
 
@@ -56,13 +59,14 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_toobar_right, menu);
-        MenuItem searchItem = menu.findItem(R.id.menu_search);//在菜单中找到对应控件的item
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchItem = menu.findItem(R.id.menu_search);//在菜单中找到对应控件的item
 
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 Intent intent = new Intent(MainActivity.this, ChooseCompanyActivity.class);
                 if (query.length() < 6 || query.length() > 50) {
                     DialogUtils.ShowToast("单号格式错误");
@@ -79,16 +83,15 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+
         return true;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (searchView != null) {
-            searchView.setFocusable(true);
-            searchView.setFocusableInTouchMode(true);
-            searchView.clearFocus();  //获取焦点
+        if (searchView != null && !searchView.isShown()) {
+            MenuItemCompat.collapseActionView(searchItem);//收起搜索框
         }
     }
 
@@ -103,6 +106,11 @@ public class MainActivity extends BaseActivity {
         }
         return true;
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
 
@@ -142,5 +150,7 @@ public class MainActivity extends BaseActivity {
 //
 //        return view;
 //    }
+
+
 
 

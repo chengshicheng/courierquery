@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.chengshicheng.courierquery.Utils.CompanyUtils;
+import com.chengshicheng.courierquery.Utils.DialogUtils;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.QueryAPI.OrderDistinguishAPI;
 import com.chengshicheng.courierquery.R;
@@ -158,8 +159,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
             intent.putExtra("expName", commList.get(position).getShipperName());
         }
         intent.putExtra("expNO", expNO);
-
-        startActivity(intent);
+        startActivityForResult(intent, 100);
     }
 
 
@@ -219,20 +219,25 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                LogUtil.PrintDebug("Scan Cancelled");
-                finish();
-
-            } else {
-                expNO = result.getContents();
-                LogUtil.PrintDebug("Scan Succeed : " + expNO);
-                doQueryCompany(expNO);
-            }
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            finish();
         } else {
-            super.onActivityResult(requestCode, resultCode, data);
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                if (result.getContents() == null) {
+                    LogUtil.PrintDebug("Scan Cancelled");
+                    finish();
+
+                } else {
+                    expNO = result.getContents();
+                    LogUtil.PrintDebug("Scan Succeed : " + expNO);
+                    doQueryCompany(expNO);
+                }
+            }
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 
     /**
