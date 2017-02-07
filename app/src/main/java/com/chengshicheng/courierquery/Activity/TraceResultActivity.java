@@ -137,7 +137,7 @@ public class TraceResultActivity extends BaseActivity {
                 insertToDataBase(response);
                 break;
             case "3":
-
+                tvOrdrrState.setText("已签收");
                 insertToDataBase(response);
                 break;
             case "4":
