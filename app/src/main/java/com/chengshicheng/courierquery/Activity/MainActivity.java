@@ -2,20 +2,27 @@ package com.chengshicheng.courierquery.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.Utils.DialogUtils;
-import com.chengshicheng.courierquery.Utils.LogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
@@ -23,11 +30,18 @@ public class MainActivity extends BaseActivity {
     private SearchView searchView;
     private MenuItem searchItem;
 
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private ArrayList<Fragment> fragmentsList;
+
+    private LayoutInflater mInflater;
+    private List<String> mTitleList = new ArrayList<>();//页卡标题集合
+
     private int requestCode = 100;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mainn);
         initViews();
     }
 
@@ -39,6 +53,44 @@ public class MainActivity extends BaseActivity {
 
         menu = (ImageView) findViewById(R.id.menu);
         menu.setOnClickListener(this);
+
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
+        mInflater = LayoutInflater.from(this);
+        //添加页卡标题
+        mTitleList.add("全部");
+        mTitleList.add("未签收");
+        mTitleList.add("已签收");
+        fragmentsList = new ArrayList<Fragment>();
+        Bundle bundle = new Bundle();
+        Fragment fragment1 = Fragment1.newInstance(
+                MainActivity.this, bundle);
+        Fragment fragment2 = Fragment2.newInstance(
+                MainActivity.this, bundle);
+        Fragment fragment3 = Fragment3.newInstance(
+                MainActivity.this, bundle);
+
+        fragmentsList.add(fragment1);
+        fragmentsList.add(fragment2);
+        fragmentsList.add(fragment3);
+        mViewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
+        mViewPager.setCurrentItem(0);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        mTabLayout.setupWithViewPager(mViewPager);
 
     }
 
@@ -107,48 +159,34 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private class TabFragmentPagerAdapter extends FragmentPagerAdapter {
+        ArrayList<Fragment> mFragmentsList;
+
+        public TabFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public TabFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentsList) {
+            super(fm);
+            mFragmentsList = fragmentsList;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentsList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentsList.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitleList.get(position);
+        }
     }
 }
-
-
-//    private FragmentTabHost mTabHost;
-//
-//    private LayoutInflater mLayoutInflater;
-//
-//    private final Class mFragmentArray[] = {Fragment1.class, Fragment2.class,
-//            Fragment3.class};
-//
-//    private final String[] mTextArray = {"查快递", "寄快递", "更多"};
-//
-//    private final int mImageArray[] = {R.drawable.fragment1_selector, R.drawable.fragment2_selector,
-//            R.drawable.fragment3_selector};
-//    private void initViews() {
-//        mLayoutInflater = LayoutInflater.from(this);
-//        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-//        mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
-//        mTabHost.getTabWidget().setDividerDrawable(null);//去除tab之间的分割线
-//        int count = mFragmentArray.length;
-//        for (int i = 0; i < count; i++) {
-//            // 给每个Tab按钮设置内容
-//            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mTextArray[i])
-//                    .setIndicator(getTabItemView(i));
-//            // 将Tab按钮添加进Tab选项卡中
-//            mTabHost.addTab(tabSpec, mFragmentArray[i], null);
-//        }
-//    }
-//
-//    private View getTabItemView(int index) {
-//        View view = mLayoutInflater.inflate(R.layout.tab_item_view, null);
-//        ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
-//        TextView textView = (TextView) view.findViewById(R.id.textview);
-//        textView.setText(mTextArray[index]);
-//        imageView.setImageResource(mImageArray[index]);
-//
-//        return view;
-//    }
 
 
 

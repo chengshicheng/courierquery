@@ -1,5 +1,6 @@
 package com.chengshicheng.courierquery.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chengshicheng.courierquery.Utils.DialogUtils;
@@ -18,72 +21,26 @@ import com.chengshicheng.courierquery.Utils.StringUtils;
 /**
  * Created by chengshicheng on 2017/1/9.
  */
-public class Fragment1 extends Fragment implements View.OnClickListener {
+public class Fragment1 extends Fragment {
+    private ListView listView;
+    private String[] data = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
 
-    private EditText intputCode;
-
-    private ImageView sacnImage;
-
-    private TextView searchButton;
-
-    private static String number;
-
-    private int requestCode = 100;
-
+    public static Fragment1 newInstance(Context context, Bundle bundle) {
+        Fragment1 newFragment = new Fragment1();
+        newFragment.setArguments(bundle);
+        return newFragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1, null);
 
-        intputCode = (EditText) view.findViewById(R.id.inputCode);
-        sacnImage = (ImageView) view.findViewById(R.id.scanImage);
-        searchButton = (TextView) view.findViewById(R.id.searchButton);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, data);
 
-        sacnImage.setOnClickListener(this);
-        searchButton.setOnClickListener(this);
+        listView = (ListView) view.findViewById(R.id.lv_fragment1);
+        listView.setAdapter(adapter);
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onClick(View v) {
-        number = intputCode.getText().toString();
-        Intent intent = new Intent();
-        intent.setClass(this.getActivity(), ChooseCompanyActivity.class);
-
-        switch (v.getId()) {
-            case R.id.searchButton:
-                if (StringUtils.isEmpty(number)) {
-                    DialogUtils.ShowToast("请输入单号");
-                } else if (number.length() < 6 || number.length() > 50) {
-                    DialogUtils.ShowToast("单号格式错误");
-                }
-                else {
-                    intent.putExtra("requestType", 1);
-                    intent.putExtra("requestNumber", number);
-                    startActivityForResult(intent, requestCode);
-                }
-                break;
-            case R.id.scanImage:
-                intputCode.setText("");
-                intent.putExtra("requestType", 2);
-                startActivityForResult(intent, requestCode);
-                break;
-            default:
-                break;
-
-        }
-
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 }

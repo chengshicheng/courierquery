@@ -199,17 +199,6 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     }
 
 
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.searchButton://开始即时查询
-                //// TODO: 2017/1/16 跳转到查询结果界面
-//                doQueryTraceAPI(expCode, expNO);
-                break;
-        }
-    }
-
     /**
      * 获取扫描结果
      *

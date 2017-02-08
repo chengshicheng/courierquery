@@ -2,20 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/listviewbg">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+    android:background="@color/listviewbg"
+    android:orientation="vertical">
 
-    </android.support.v7.widget.Toolbar>
     <TextView
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="暂时未开放，请等待......"
         android:textColor="#0A0A0A"
-        android:textSize="20sp"
-        android:text="暂时未开放，请等待......"/>
+        android:textSize="20sp" />
 </LinearLayout>

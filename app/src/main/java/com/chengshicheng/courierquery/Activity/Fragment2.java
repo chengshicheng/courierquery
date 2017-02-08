@@ -1,5 +1,6 @@
 package com.chengshicheng.courierquery.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,18 +16,16 @@ import com.chengshicheng.courierquery.R;
  */
 
 public class Fragment2 extends Fragment {
+    public static Fragment2 newInstance(Context context, Bundle bundle) {
+        Fragment2 newFragment = new Fragment2();
+        newFragment.setArguments(bundle);
+        return newFragment;
+
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment2, null);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-
-//        toolbar.setNavigationIcon(R.drawable.common_google_signin_btn_icon_dark);
-//        toolbar.inflateMenu(R.menu.zhihu_toolbar_menu);//MenuItem
-
-
-        toolbar.setTitle(R.string.app_name);
-        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
         return view;
     }
