@@ -2,7 +2,7 @@ package com.chengshicheng.courierquery.ResposeBean;
 
 /**
  * 及时查询物流跟踪
- * Traces
+ * Traces详情
  * Created by chengshicheng on 2017/1/15.
  * http://www.kdniao.com/api-track
  */

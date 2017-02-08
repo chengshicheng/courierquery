@@ -18,10 +18,11 @@ public class OrderQuery {
     private boolean isSuccess;
     private String State;
     private String Traces2Json;
-    @Generated(hash = 2091719590)
+    private String remark;
+    @Generated(hash = 1729528832)
     public OrderQuery(Long OrderNum, String OrderCode, String OrderName,
-            long LastQueryTime, boolean isSuccess, String State,
-            String Traces2Json) {
+            long LastQueryTime, boolean isSuccess, String State, String Traces2Json,
+            String remark) {
         this.OrderNum = OrderNum;
         this.OrderCode = OrderCode;
         this.OrderName = OrderName;
@@ -29,6 +30,7 @@ public class OrderQuery {
         this.isSuccess = isSuccess;
         this.State = State;
         this.Traces2Json = Traces2Json;
+        this.remark = remark;
     }
     @Generated(hash = 678038440)
     public OrderQuery() {
@@ -75,6 +77,11 @@ public class OrderQuery {
     public void setTraces2Json(String Traces2Json) {
         this.Traces2Json = Traces2Json;
     }
-
+    public String getRemark() {
+        return this.remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
 }

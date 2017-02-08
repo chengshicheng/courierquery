@@ -79,14 +79,17 @@ public class TraceResultActivity extends BaseActivity {
         save.setLastQueryTime(System.currentTimeMillis());
         save.setIsSuccess(response.isSuccess());
         save.setState(response.getState());
-        save.setTraces2Json("");
+
+        Gson gson = new Gson();
+        String traces = gson.toJson(response.getTraces());
+        LogUtil.PrintDebug("-----------------" + traces);
+        save.setTraces2Json(traces);
         mOrderDao.insertOrReplace(save);
 
         OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
         if (query != null) {
             LogUtil.PrintDebug(query.getOrderNum() + "");
         }
-
     }
 
     @Override
@@ -123,7 +126,6 @@ public class TraceResultActivity extends BaseActivity {
 
 
     private void showTraces(OrderTraceResponse response) {
-        StringBuffer result = new StringBuffer();
         //物流状态：2-在途中,3-签收,4-问题件,0 暂无物流轨迹
         state = (null == response.getState()) ? "" : response.getState();
         ArrayList<OrderTrace> traces = response.getTraces();

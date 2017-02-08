@@ -105,7 +105,6 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent, requestCode);
         }
         return true;
-
     }
 
     @Override
