@@ -126,7 +126,10 @@ public class MainActivity extends BaseActivity {
                     intent.putExtra("requestType", 1);
                     intent.putExtra("requestNumber", query);
                     startActivityForResult(intent, requestCode);
+                    MenuItemCompat.collapseActionView(searchItem);//收起搜索框
+//                    searchView.onActionViewCollapsed();
                 }
+
                 return false;
             }
 
@@ -137,14 +140,6 @@ public class MainActivity extends BaseActivity {
         });
 
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (searchView != null && !searchView.isShown()) {
-            MenuItemCompat.collapseActionView(searchItem);//收起搜索框
-        }
     }
 
     @Override
