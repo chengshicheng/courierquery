@@ -61,8 +61,8 @@ public class TraceResultAdapter extends BaseAdapter {
             // 第一行头的竖线不显示
             holder.tvTopLine.setVisibility(View.INVISIBLE);
             // 字体颜色蓝色
-            holder.tvAcceptTime.setTextColor(context.getResources().getColor(R.color.tabBlue));
-            holder.tvAcceptStation.setTextColor(context.getResources().getColor(R.color.tabBlue));
+            holder.tvAcceptTime.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            holder.tvAcceptStation.setTextColor(context.getResources().getColor(R.color.colorAccent));
             //第一行圆点设置大一点
             holder.tvDot.getLayoutParams().width = DensityUtils.dp2px(context, 10);
             holder.tvDot.getLayoutParams().height = DensityUtils.dp2px(context, 10);

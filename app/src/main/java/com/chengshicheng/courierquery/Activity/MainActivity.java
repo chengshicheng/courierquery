@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity {
         fragmentsList.add(fragment3);
         mViewPager.setAdapter(new TabFragmentPagerAdapter(getSupportFragmentManager(), fragmentsList));
         mViewPager.setCurrentItem(0);
+        mViewPager.setOffscreenPageLimit(fragmentsList.size());//可避免切换时重复执行onCreatView()
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

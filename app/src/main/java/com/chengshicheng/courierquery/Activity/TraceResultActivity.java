@@ -79,6 +79,7 @@ public class TraceResultActivity extends BaseActivity {
         save.setLastQueryTime(System.currentTimeMillis());
         save.setIsSuccess(response.isSuccess());
         save.setState(response.getState());
+        save.setRemark("我是备注");
 
         Gson gson = new Gson();
         String traces = gson.toJson(response.getTraces());
@@ -150,7 +151,7 @@ public class TraceResultActivity extends BaseActivity {
                 tvOrdrrState.setText("没有物流信息，请检查单号");
                 break;
         }
-        tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
+        tvOrdrrState.setTextColor(getResources().getColor(R.color.colorAccent));
         Collections.reverse(traces);
         tracesList.addAll(traces);
         resultAdapter.notifyDataSetChanged();
