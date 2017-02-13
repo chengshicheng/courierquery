@@ -159,6 +159,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
             intent.putExtra("expName", commList.get(position).getShipperName());
         }
         intent.putExtra("expNO", expNO);
+        //正常查询快递requestCode为100.从主界面直接点进去，为101
         startActivityForResult(intent, 100);
     }
 

@@ -1,5 +1,9 @@
 package com.chengshicheng.courierquery.QueryAPI;
 
+import android.os.Message;
+
+import com.chengshicheng.courierquery.CourierApp;
+import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.RequestBean.OrderTraceRequestData;
 import com.google.gson.Gson;
@@ -35,7 +39,6 @@ public class OrderTraceAPI {
         Gson gson = new Gson();
         String requestData = gson.toJson(new OrderTraceRequestData().getRequestData(expCode, expNo));
         LogUtil.PrintDebug("即时查询RequestData:" + requestData);
-
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("RequestData", urlEncoder(requestData, "UTF-8"));

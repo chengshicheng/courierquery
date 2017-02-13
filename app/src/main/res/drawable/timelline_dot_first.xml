@@ -4,6 +4,6 @@
     android:layout_height="10dp"
     android:shape="oval">
 
-    <solid android:color="@color/tabBlue" />
+    <solid android:color="@color/colorAccent" />
 
 </shape>

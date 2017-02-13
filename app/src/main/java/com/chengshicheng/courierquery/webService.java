@@ -18,7 +18,7 @@ import java.util.Map;
 public class WebService {
 
 
-    public static String sendPost(String url, Map<String, String> params) {
+    public static String sendPost(String url, final Map<String, String> params) {
         OutputStreamWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();

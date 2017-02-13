@@ -5,12 +5,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.CourierApp;
 import com.chengshicheng.courierquery.GreenDao.GreenDaoHelper;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
+import com.chengshicheng.courierquery.Utils.DialogUtils;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
@@ -30,7 +33,7 @@ import java.util.Collections;
 public class TraceResultActivity extends BaseActivity {
     private TextView tvCompany, tvOrderNum, tvOrdrrState;
     private String expCode, expName, expNO;
-    private static String state;
+    private static String state = "-1";
     private static ListView lvTrace;
     private TraceResultAdapter resultAdapter;
     private ArrayList<OrderTrace> tracesList = new ArrayList<OrderTrace>();
@@ -39,59 +42,13 @@ public class TraceResultActivity extends BaseActivity {
 
     private static final int QUERY_FAILED = 0;
 
+
     private static final int API_EXCEPTION = 1;
 
     private static final int QUERY_SUCCESS = 2;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case QUERY_SUCCESS:
-                    OrderTraceResponse response = (OrderTraceResponse) msg.obj;
-                    showTraces(response);
-                    break;
-                case QUERY_FAILED:
-                    OrderTraceResponse response_error = (OrderTraceResponse) msg.obj;
-                    tvOrdrrState.setText("查询失败：" + response_error.getReason());
-                    tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
-                    break;
-                case API_EXCEPTION:
-                    tvOrdrrState.setText("查询失败,请稍后查询");
-                    tvOrdrrState.setTextColor(getResources().getColor(R.color.tabBlue));
-                    break;
-            }
-        }
-    };
+    private static final int NET_ERROR = 3;
 
-    /**
-     * 保存到数据库
-     *
-     * @param response
-     */
-    private void insertToDataBase(OrderTraceResponse response) {
-        mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
-        OrderQuery save = new OrderQuery();
-        save.setOrderNum(Long.valueOf(response.getLogisticCode()));
-        save.setOrderCode(response.getShipperCode());
-        save.setOrderName(expName);
-        save.setLastQueryTime(System.currentTimeMillis());
-        save.setIsSuccess(response.isSuccess());
-        save.setState(response.getState());
-        save.setRemark("我是备注");
-
-        Gson gson = new Gson();
-        String traces = gson.toJson(response.getTraces());
-        LogUtil.PrintDebug("-----------------" + traces);
-        save.setTraces2Json(traces);
-        mOrderDao.insertOrReplace(save);
-
-        OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
-        if (query != null) {
-            LogUtil.PrintDebug(query.getOrderNum() + "");
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,6 +82,59 @@ public class TraceResultActivity extends BaseActivity {
         lvTrace.setAdapter(resultAdapter);
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case QUERY_SUCCESS:
+                    OrderTraceResponse response = (OrderTraceResponse) msg.obj;
+                    showTraces(response);
+                    break;
+                case QUERY_FAILED:
+                    OrderTraceResponse response_error = (OrderTraceResponse) msg.obj;
+                    tvOrdrrState.setText("查询失败：" + response_error.getReason());
+                    tvOrdrrState.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                case API_EXCEPTION:
+                    tvOrdrrState.setText("查询失败,请稍后查询");
+                    tvOrdrrState.setTextColor(getResources().getColor(R.color.colorAccent));
+                    break;
+                case NET_ERROR:
+                    tvOrdrrState.setText("查询失败,请检查网络");
+                    tvOrdrrState.setTextColor(getResources().getColor(R.color.colorAccent));
+                    DialogUtils.ShowToast("您的设备没有连接网络");
+                    break;
+            }
+        }
+    };
+
+    /**
+     * 保存到数据库
+     *
+     * @param response
+     */
+    private void insertToDataBase(OrderTraceResponse response) {
+        mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
+        OrderQuery save = new OrderQuery();
+        save.setOrderNum(Long.valueOf(response.getLogisticCode()));
+        save.setOrderCode(response.getShipperCode());
+        save.setOrderName(expName);
+        save.setLastQueryTime(System.currentTimeMillis());
+        save.setIsSuccess(response.isSuccess());
+        save.setState(response.getState());
+
+        Gson gson = new Gson();
+        String traces = gson.toJson(response.getTraces());
+        LogUtil.PrintDebug("-----------------" + traces);
+        save.setTraces2Json(traces);
+        mOrderDao.insertOrReplace(save);
+//
+//        OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
+//        if (query != null) {
+//            LogUtil.PrintDebug(query.getOrderNum() + "");
+//        }
+    }
 
     private void showTraces(OrderTraceResponse response) {
         //物流状态：2-在途中,3-签收,4-问题件,0 暂无物流轨迹
@@ -167,6 +177,7 @@ public class TraceResultActivity extends BaseActivity {
      */
     private void doQueryTraceAPI(final String code, final String num) {
 
+
         /**
          * 即时查询线程
          */
@@ -187,7 +198,6 @@ public class TraceResultActivity extends BaseActivity {
                     } else {
                         message.what = QUERY_FAILED;
                     }
-
                 } catch (Exception e) {
                     message.what = API_EXCEPTION;
                     LogUtil.PrintError("doQueryAPI Error", e);
@@ -196,12 +206,19 @@ public class TraceResultActivity extends BaseActivity {
                 }
             }
         };
-        new Thread(queryTrace).start();
+
+        if (CourierApp.isNetworkConnected(this)) {
+            new Thread(queryTrace).start();
+        } else {
+            Message message = Message.obtain();
+            message.what = NET_ERROR;
+            handler.sendMessage(message);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (state.isEmpty())
+        if (TextUtils.isEmpty(state))
             setResult(RESULT_CANCELED);
         else {
             setResult(RESULT_OK);

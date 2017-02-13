@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.CourierApp;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.ResposeBean.ShipperBean;
 
@@ -40,6 +41,8 @@ public class TopCompanyAdapter extends BaseAdapter {
 
             holder.comanyImage.setImageResource(R.drawable.aap);
             holder.rightImage.setImageResource(R.drawable.a7o);
+            holder.comanyText.setTextColor(CourierApp.getContext().getResources().getColor(R.color.colorAccent));
+            holder.expNumberText.setTextColor(CourierApp.getContext().getResources().getColor(R.color.colorAccent));
 
             view.setTag(holder);//绑定ViewHolder对象
         } else {
@@ -49,6 +52,7 @@ public class TopCompanyAdapter extends BaseAdapter {
 
         holder.comanyText.setText(shipperBean.get(position).getShipperName());
         holder.expNumberText.setText(ChooseCompanyActivity.expNO);
+
         return view;
     }
 

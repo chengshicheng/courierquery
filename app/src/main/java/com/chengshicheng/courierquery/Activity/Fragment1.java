@@ -1,6 +1,7 @@
 package com.chengshicheng.courierquery.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,13 +24,11 @@ import java.util.ArrayList;
  * Created by chengshicheng on 2017/1/9.
  */
 public class Fragment1 extends Fragment implements OnRecyclerViewItemClickListener {
-    private static Context context;
     private RecyclerView recyclerView;
     private OrderQueryDao mOrderDao;
     private ArrayList<OrderQuery> mDatas = new ArrayList<OrderQuery>();
 
     public static Fragment1 newInstance(Context context, Bundle bundle) {
-        Fragment1.context = context;
         Fragment1 newFragment = new Fragment1();
         newFragment.setArguments(bundle);
         return newFragment;
@@ -40,7 +39,7 @@ public class Fragment1 extends Fragment implements OnRecyclerViewItemClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1, null);
         init();
-        MyRecyclerAdapter mAdapter = new MyRecyclerAdapter(context, mDatas);
+        MyRecyclerAdapter mAdapter = new MyRecyclerAdapter(getActivity(), mDatas);
         recyclerView = (RecyclerView) view.findViewById(R.id.lv_fragment1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(CourierApp.getContext());
         recyclerView.addItemDecoration(new RecycleViewDivider(
@@ -59,7 +58,13 @@ public class Fragment1 extends Fragment implements OnRecyclerViewItemClickListen
 
     @Override
     public void onItemClick(View view, int position) {
-        DialogUtils.ShowToast("" + position);
-
+        OrderQuery order = mDatas.get(position);
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), TraceResultActivity.class);
+        intent.putExtra("expCode", order.getOrderCode());
+        intent.putExtra("expName", order.getOrderName());
+        intent.putExtra("expNO", order.getOrderNum().toString());
+        //正常查询快递requestCode为100.从主界面直接点进去，为101
+        startActivityForResult(intent, 101);
     }
 }
