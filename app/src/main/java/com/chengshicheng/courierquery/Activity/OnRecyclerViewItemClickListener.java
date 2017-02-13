@@ -3,7 +3,7 @@ package com.chengshicheng.courierquery.Activity;
 import android.view.View;
 
 /**
- * ItemClick的回调接口
+ * ItemClick的点击回调接口
  * <p>
  * Created by chengshicheng on 2017/2/11.
  */

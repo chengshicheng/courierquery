@@ -31,14 +31,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     private ArrayList<OrderQuery> mDatas = new ArrayList<OrderQuery>();
     private static final ArrayList<Integer> colorList = new ArrayList<Integer>(Arrays.asList(0XFF536dfe, 0xFF8BC34A, 0xFFFF9800, 0xFFF44336, 0xFF607D8B));
     private OnRecyclerViewItemClickListener mClickListener;
+    private OnRecyclerViewItemLongClickListener mLongClickListener;
 
     public MyRecyclerAdapter(Context context, ArrayList<OrderQuery> datas) {
         this.mContext = context;
         this.mDatas = datas;
     }
 
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener mOnItemClickListener) {
-        this.mClickListener = mOnItemClickListener;
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener onItemClickListener) {
+        this.mClickListener = onItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnRecyclerViewItemLongClickListener onItemLongClickListener) {
+        this.mLongClickListener = onItemLongClickListener;
     }
 
 
@@ -83,7 +88,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
             holder.tvDetail.setText(detail);
         }
         holder.tvState.setText(getState(order));
-        String time = getTime(order);
+        final String time = getTime(order);
         if (TextUtils.isEmpty(time)) {
             holder.tvTime.setVisibility(View.GONE);
         }
@@ -97,6 +102,17 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
                 public void onClick(View v) {
                     int position = holder.getLayoutPosition();
                     mClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }        //判断是否设置了监听器
+        if (mLongClickListener != null) {
+            //为ItemView设置监听器
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    mLongClickListener.onItemLongClick(holder.itemView, position);
+                    return true;
                 }
             });
         }

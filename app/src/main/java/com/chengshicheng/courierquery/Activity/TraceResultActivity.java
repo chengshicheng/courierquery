@@ -1,9 +1,12 @@
 package com.chengshicheng.courierquery.Activity;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
 import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
 import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
+import com.chengshicheng.courierquery.Utils.StringUtils;
 import com.chengshicheng.greendao.gen.OrderQueryDao;
 import com.google.gson.Gson;
 
@@ -129,11 +133,21 @@ public class TraceResultActivity extends BaseActivity {
         LogUtil.PrintDebug("-----------------" + traces);
         save.setTraces2Json(traces);
         mOrderDao.insertOrReplace(save);
+        sendBroadCastToRefresh();
 //
 //        OrderQuery query = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderCode.eq("YD")).unique();
 //        if (query != null) {
 //            LogUtil.PrintDebug(query.getOrderNum() + "");
 //        }
+    }
+
+    /****
+     * 通知主界面刷新列表
+     */
+    private void sendBroadCastToRefresh() {
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        Intent intent = new Intent(StringUtils.refreshAction);
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     private void showTraces(OrderTraceResponse response) {

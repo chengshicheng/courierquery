@@ -15,6 +15,11 @@ public class StringUtils {
     //电商加密私钥，快递鸟提供，注意保管，不要泄漏
     public static String AppKey = "200c950d-3605-42d9-9007-4ec08f7f4d1c";
 
+    /***
+     * 通知主界面刷新的广播action
+     */
+    public static final String refreshAction = "com.chengshicheng.courierquery.refreshMainActivity";
+
     public static boolean isEmpty(String string) {
         if (string == null) {
             return true;
