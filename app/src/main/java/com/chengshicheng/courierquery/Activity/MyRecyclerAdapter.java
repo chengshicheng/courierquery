@@ -4,23 +4,21 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.chengshicheng.courierquery.CourierApp;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
-import com.chengshicheng.courierquery.Utils.DialogUtils;
+import com.chengshicheng.courierquery.Web.ResposeBean.OrderTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by chengshicheng on 2017/2/12.
@@ -50,10 +48,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     @Override
     public MyRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_home, parent, false);
-
+        //添加点击及长按动画效果
+        TypedValue typedValue = new TypedValue();
+        mContext.getTheme().resolveAttribute(R.attr.selectableItemBackground, typedValue, true);
+        itemView.setBackgroundResource(typedValue.resourceId);
         MyRecyclerAdapter.MyViewHolder holder = new MyRecyclerAdapter.MyViewHolder(itemView);
-        GradientDrawable bgShape = (GradientDrawable) holder.tvDot.getBackground();
-        bgShape.setColor(0xFF009688);
 
 
         //随机背景颜色
@@ -69,12 +68,21 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         OrderQuery order = mDatas.get(position);
 
+        GradientDrawable bgShape = (GradientDrawable) holder.tvDot.getBackground();
+
+        if (order.getToTop()) {
+            bgShape.setColor(0xFFFF4081);
+        } else {
+            bgShape.setColor(0xFF009688);
+        }
+
         holder.tvDot.setText(order.getOrderName().substring(0, 1));
         holder.tvRemark.setText(order.getRemark());
         if (TextUtils.isEmpty(order.getRemark())) {
             holder.tvRemark.setVisibility(View.GONE);
             holder.tvNameNum.setTextSize(16);
         } else {
+            holder.tvRemark.setVisibility(View.VISIBLE);
             holder.tvRemark.setTextSize(16);
             holder.tvNameNum.setTextSize(12);
             holder.tvNameNum.setTextColor(mContext.getResources().getColor(R.color.greyText));
@@ -85,12 +93,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
         if (TextUtils.isEmpty(detail)) {
             holder.tvDetail.setVisibility(View.GONE);
         } else {
+            holder.tvDetail.setVisibility(View.VISIBLE);
             holder.tvDetail.setText(detail);
         }
         holder.tvState.setText(getState(order));
         final String time = getTime(order);
         if (TextUtils.isEmpty(time)) {
             holder.tvTime.setVisibility(View.GONE);
+        } else {
+            holder.tvDetail.setVisibility(View.VISIBLE);
         }
         holder.tvTime.setText(time);
 

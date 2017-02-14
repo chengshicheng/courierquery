@@ -12,13 +12,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.chengshicheng.courierquery.Utils.CompanyUtils;
-import com.chengshicheng.courierquery.Utils.DialogUtils;
-import com.chengshicheng.courierquery.Utils.LogUtil;
-import com.chengshicheng.courierquery.QueryAPI.OrderDistinguishAPI;
+import com.chengshicheng.courierquery.Adapter.CommonCompanyAdapter;
+import com.chengshicheng.courierquery.Adapter.TopCompanyAdapter;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.ResposeBean.OrderDistinguishResponse;
-import com.chengshicheng.courierquery.ResposeBean.ShipperBean;
+import com.chengshicheng.courierquery.Utils.CompanyUtils;
+import com.chengshicheng.courierquery.Utils.LogUtil;
+import com.chengshicheng.courierquery.Web.QueryAPI.OrderDistinguishAPI;
+import com.chengshicheng.courierquery.Web.ResposeBean.OrderDistinguishResponse;
+import com.chengshicheng.courierquery.Web.ResposeBean.ShipperBean;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -210,6 +211,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
+            setResult(RESULT_OK);
             finish();
         } else {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -226,8 +228,6 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-
-
     }
 
     /**

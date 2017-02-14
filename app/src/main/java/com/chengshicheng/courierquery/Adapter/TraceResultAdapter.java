@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.Activity;
+package com.chengshicheng.courierquery.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.chengshicheng.courierquery.Utils.DensityUtils;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
+import com.chengshicheng.courierquery.Web.ResposeBean.OrderTrace;
 
 import java.util.ArrayList;
 

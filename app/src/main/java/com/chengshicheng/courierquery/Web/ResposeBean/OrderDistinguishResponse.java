@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.ResposeBean;
+package com.chengshicheng.courierquery.Web.ResposeBean;
 
 import java.util.ArrayList;
 

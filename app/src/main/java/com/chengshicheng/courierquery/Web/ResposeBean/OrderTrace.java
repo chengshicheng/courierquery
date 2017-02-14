@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.ResposeBean;
+package com.chengshicheng.courierquery.Web.ResposeBean;
 
 /**
  * 及时查询物流跟踪

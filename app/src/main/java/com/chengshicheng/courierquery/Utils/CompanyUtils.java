@@ -1,6 +1,7 @@
 package com.chengshicheng.courierquery.Utils;
 
-import com.chengshicheng.courierquery.ResposeBean.ShipperBean;
+
+import com.chengshicheng.courierquery.Web.ResposeBean.ShipperBean;
 
 import java.util.ArrayList;
 

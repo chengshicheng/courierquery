@@ -67,10 +67,10 @@ public class CustomScanActivity extends BaseActivity implements DecoratedBarcode
             public void onClick(View v) {
                 if (isLightOn) {
                     mDBV.setTorchOff();
-                    mDBV.setBackgroundResource(R.drawable.scan_qrcode_flash_light_off);
+                    flash_switch.setImageResource(R.drawable.ic_flash_off_white_48dp);
                 } else {
                     mDBV.setTorchOn();
-                    mDBV.setBackgroundResource(R.drawable.scan_qrcode_flash_light_on);
+                    flash_switch.setImageResource(R.drawable.ic_flash_on_white_48dp);
                 }
             }
         });

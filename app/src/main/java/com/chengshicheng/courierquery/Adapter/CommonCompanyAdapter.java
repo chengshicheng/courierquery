@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.Activity;
+package com.chengshicheng.courierquery.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.Activity.ChooseCompanyActivity;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.ResposeBean.ShipperBean;
+import com.chengshicheng.courierquery.Web.ResposeBean.ShipperBean;
 
 import java.util.ArrayList;
 

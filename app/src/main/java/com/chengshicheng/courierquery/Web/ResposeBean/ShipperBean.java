@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.ResposeBean;
+package com.chengshicheng.courierquery.Web.ResposeBean;
 
 /**
  * 单号识别Shipper

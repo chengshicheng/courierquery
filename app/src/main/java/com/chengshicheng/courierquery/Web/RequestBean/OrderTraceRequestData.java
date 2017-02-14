@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.RequestBean;
+package com.chengshicheng.courierquery.Web.RequestBean;
 
 /**
  * Created by chengshicheng on 2017/1/13.

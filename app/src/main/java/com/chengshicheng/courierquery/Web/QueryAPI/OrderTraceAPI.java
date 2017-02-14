@@ -1,11 +1,7 @@
-package com.chengshicheng.courierquery.QueryAPI;
+package com.chengshicheng.courierquery.Web.QueryAPI;
 
-import android.os.Message;
-
-import com.chengshicheng.courierquery.CourierApp;
-import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
 import com.chengshicheng.courierquery.Utils.LogUtil;
-import com.chengshicheng.courierquery.RequestBean.OrderTraceRequestData;
+import com.chengshicheng.courierquery.Web.RequestBean.OrderTraceRequestData;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -15,7 +11,7 @@ import static com.chengshicheng.courierquery.Utils.StringUtils.AppKey;
 import static com.chengshicheng.courierquery.Utils.StringUtils.EBusinessID;
 import static com.chengshicheng.courierquery.Utils.StringUtils.encrypt;
 import static com.chengshicheng.courierquery.Utils.StringUtils.urlEncoder;
-import static com.chengshicheng.courierquery.WebService.sendPost;
+import static com.chengshicheng.courierquery.Web.WebService.sendPost;
 
 /**
  * 及时查询订单轨迹

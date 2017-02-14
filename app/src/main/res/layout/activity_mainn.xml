@@ -66,5 +66,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:src="@drawable/scan_qrcode_flash_light_off" />
+        android:src="@drawable/ic_flash_off_white_48dp" />
 </android.support.design.widget.CoordinatorLayout>

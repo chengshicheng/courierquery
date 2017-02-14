@@ -1,7 +1,6 @@
 package com.chengshicheng.courierquery.Activity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,16 +12,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.Adapter.TraceResultAdapter;
 import com.chengshicheng.courierquery.CourierApp;
 import com.chengshicheng.courierquery.GreenDao.GreenDaoHelper;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.Utils.DialogUtils;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.QueryAPI.OrderTraceAPI;
-import com.chengshicheng.courierquery.ResposeBean.OrderTraceResponse;
-import com.chengshicheng.courierquery.ResposeBean.OrderTrace;
+;
 import com.chengshicheng.courierquery.Utils.StringUtils;
+import com.chengshicheng.courierquery.Web.QueryAPI.OrderTraceAPI;
+import com.chengshicheng.courierquery.Web.ResposeBean.OrderTrace;
+import com.chengshicheng.courierquery.Web.ResposeBean.OrderTraceResponse;
 import com.chengshicheng.greendao.gen.OrderQueryDao;
 import com.google.gson.Gson;
 
@@ -120,6 +121,9 @@ public class TraceResultActivity extends BaseActivity {
      */
     private void insertToDataBase(OrderTraceResponse response) {
         mOrderDao = GreenDaoHelper.getDaoSession().getOrderQueryDao();
+        //老数据
+        OrderQuery oldOrder = mOrderDao.queryBuilder().where(OrderQueryDao.Properties.OrderNum.eq(expNO)).unique();
+
         OrderQuery save = new OrderQuery();
         save.setOrderNum(Long.valueOf(response.getLogisticCode()));
         save.setOrderCode(response.getShipperCode());
@@ -127,11 +131,15 @@ public class TraceResultActivity extends BaseActivity {
         save.setLastQueryTime(System.currentTimeMillis());
         save.setIsSuccess(response.isSuccess());
         save.setState(response.getState());
+        if (null != oldOrder) {
+            save.setRemark(oldOrder.getRemark());
+        }
 
         Gson gson = new Gson();
         String traces = gson.toJson(response.getTraces());
         LogUtil.PrintDebug("-----------------" + traces);
         save.setTraces2Json(traces);
+        //更新数据
         mOrderDao.insertOrReplace(save);
         sendBroadCastToRefresh();
 //

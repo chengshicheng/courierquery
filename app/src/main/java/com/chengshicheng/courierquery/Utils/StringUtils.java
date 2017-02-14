@@ -1,5 +1,8 @@
 package com.chengshicheng.courierquery.Utils;
 
+import android.content.ClipboardManager;
+import android.content.Context;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -30,6 +33,18 @@ public class StringUtils {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 复制文本到系统剪切板
+     *
+     * @param content
+     * @param context
+     */
+    public static void toCopy(String content, Context context) {
+        // 得到剪贴板管理器
+        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.setText(content.trim());
     }
 
     /**

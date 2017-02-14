@@ -16,12 +16,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.Utils.DialogUtils;
+import com.chengshicheng.courierquery.Utils.LogUtil;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,7 @@ public class MainActivity extends BaseActivity {
     private MenuItem searchItem;
 
     private TabLayout mTabLayout;
+    private Toolbar toolbar;
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragmentsList;
 
@@ -48,7 +53,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //隐藏Toolbar的标题
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -62,8 +67,8 @@ public class MainActivity extends BaseActivity {
         mInflater = LayoutInflater.from(this);
         //添加页卡标题
         mTitleList.add("全部");
-        mTitleList.add("未签收");
         mTitleList.add("已签收");
+        mTitleList.add("未签收");
         fragmentsList = new ArrayList<Fragment>();
         Bundle bundle = new Bundle();
         Fragment fragment1 = Fragment1.newInstance(
@@ -129,8 +134,7 @@ public class MainActivity extends BaseActivity {
                     intent.putExtra("requestType", 1);
                     intent.putExtra("requestNumber", query);
                     startActivityForResult(intent, requestCode);
-                    MenuItemCompat.collapseActionView(searchItem);//收起搜索框
-//                    searchView.onActionViewCollapsed();
+//                    MenuItemCompat.collapseActionView(searchItem);//收起搜索框
                 }
 
                 return false;
@@ -184,6 +188,56 @@ public class MainActivity extends BaseActivity {
             return mTitleList.get(position);
         }
     }
+
+    /**
+     * 判断(x,y)是否在view的区域内
+     */
+    private boolean isTouchPointInView(View view, int x, int y) {
+        if (view == null) {
+            return false;
+        }
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getMeasuredWidth();
+        int bottom = top + view.getMeasuredHeight();
+        //view.isClickable() &&
+        if (y >= top && y <= bottom && x >= left
+                && x <= right) {
+            return true;
+        }
+        return false;
+    }
+
+    /***
+     * 触摸事件不在toorBar中时，收起SearchView
+     *
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        int x = (int) ev.getRawX();
+        int y = (int) ev.getRawY();
+        if (!isTouchPointInView(toolbar, x, y)) {
+            MenuItemCompat.collapseActionView(searchItem);//收起搜索框
+        }
+        return super.dispatchTouchEvent(ev);
+        //do something
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            MenuItemCompat.collapseActionView(searchItem);//收起搜索框
+        } else {
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }
 
 

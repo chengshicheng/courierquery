@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.QueryAPI;
+package com.chengshicheng.courierquery.Web.QueryAPI;
 
 import com.chengshicheng.courierquery.Utils.LogUtil;
 
@@ -9,7 +9,7 @@ import static com.chengshicheng.courierquery.Utils.StringUtils.AppKey;
 import static com.chengshicheng.courierquery.Utils.StringUtils.EBusinessID;
 import static com.chengshicheng.courierquery.Utils.StringUtils.encrypt;
 import static com.chengshicheng.courierquery.Utils.StringUtils.urlEncoder;
-import static com.chengshicheng.courierquery.WebService.sendPost;
+import static com.chengshicheng.courierquery.Web.WebService.sendPost;
 
 /**
  * Created by chengshicheng on 2017/1/16.

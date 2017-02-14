@@ -1,10 +1,13 @@
 package com.chengshicheng.courierquery.GreenDao;
 
+import android.support.design.widget.CoordinatorLayout;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
+ * 数据库表
  * Created by chengshicheng on 2017/1/22.
  */
 @Entity
@@ -22,10 +25,13 @@ public class OrderQuery {
     //用户备注
     private String remark;
 
-    @Generated(hash = 1729528832)
+    //用户备注
+    private boolean toTop;
+
+    @Generated(hash = 1133180536)
     public OrderQuery(Long OrderNum, String OrderCode, String OrderName,
                       long LastQueryTime, boolean isSuccess, String State, String Traces2Json,
-                      String remark) {
+                      String remark, boolean toTop) {
         this.OrderNum = OrderNum;
         this.OrderCode = OrderCode;
         this.OrderName = OrderName;
@@ -34,6 +40,7 @@ public class OrderQuery {
         this.State = State;
         this.Traces2Json = Traces2Json;
         this.remark = remark;
+        this.toTop = toTop;
     }
 
     @Generated(hash = 678038440)
@@ -103,5 +110,14 @@ public class OrderQuery {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public boolean getToTop() {
+        return this.toTop;
+    }
+
+    public void setToTop(boolean toTop) {
+        this.toTop = toTop;
+    }
+
 
 }

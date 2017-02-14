@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery;
+package com.chengshicheng.courierquery.Web;
 
 import com.chengshicheng.courierquery.Utils.LogUtil;
 
