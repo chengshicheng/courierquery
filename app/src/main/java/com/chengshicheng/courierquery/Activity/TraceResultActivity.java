@@ -30,6 +30,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static android.R.id.message;
+
 /**
  * 及时查询，显示物流结果
  * Created by chengshicheng on 2017/1/17.
@@ -47,7 +49,9 @@ public class TraceResultActivity extends BaseActivity {
 
     private static final int QUERY_FAILED = 0;
 
-
+    /**
+     * 系统错误、服务器接口异常等
+     */
     private static final int API_EXCEPTION = 1;
 
     private static final int QUERY_SUCCESS = 2;
@@ -198,18 +202,17 @@ public class TraceResultActivity extends BaseActivity {
      * @param num
      */
     private void doQueryTraceAPI(final String code, final String num) {
+        if (!CourierApp.isNetworkConnected(this)) {
+            handler.sendEmptyMessage(NET_ERROR);
+            return;
+        }
 
+        try {
+            OrderTraceAPI.getOrderTracesByJson(code, num, new WebCallBackListener() {
+                Message message = Message.obtain();
 
-        /**
-         * 即时查询线程
-         */
-        Runnable queryTrace = new Runnable() {
-            Message message = Message.obtain();
-
-            @Override
-            public void run() {
-                try {
-                    String result = OrderTraceAPI.getOrderTracesByJson(code, num);
+                @Override
+                public void onSuccess(String result) {
                     LogUtil.PrintDebug(result);
                     Gson gson = new Gson();
                     OrderTraceResponse response = gson.fromJson(result, OrderTraceResponse.class);
@@ -218,23 +221,21 @@ public class TraceResultActivity extends BaseActivity {
                         //查询成功
                         message.what = QUERY_SUCCESS;
                     } else {
+                        //查询物流信息失败
                         message.what = QUERY_FAILED;
+
                     }
-                } catch (Exception e) {
-                    message.what = API_EXCEPTION;
-                    LogUtil.PrintError("doQueryAPI Error", e);
-                } finally {
                     handler.sendMessage(message);
                 }
-            }
-        };
 
-        if (CourierApp.isNetworkConnected(this)) {
-            new Thread(queryTrace).start();
-        } else {
-            Message message = Message.obtain();
-            message.what = NET_ERROR;
-            handler.sendMessage(message);
+                @Override
+                public void onFailed() {
+                    handler.sendEmptyMessage(API_EXCEPTION);
+                }
+            });
+        } catch (Exception e) {
+            LogUtil.PrintError("OrderTraceAPI Error", e);
+            handler.sendEmptyMessage(API_EXCEPTION);
         }
     }
 

@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.chengshicheng.courierquery.Adapter.MyRecyclerAdapter;
+import com.chengshicheng.courierquery.Adapter.RecycleViewDivider;
 import com.chengshicheng.courierquery.CourierApp;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.R;

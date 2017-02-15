@@ -1,7 +1,9 @@
 package com.chengshicheng.courierquery.Web.QueryAPI;
 
+import com.chengshicheng.courierquery.Activity.WebCallBackListener;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 import com.chengshicheng.courierquery.Web.RequestBean.OrderTraceRequestData;
+import com.chengshicheng.courierquery.Web.WebService;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public class OrderTraceAPI {
      *
      * @throws Exception
      */
-    public static String getOrderTracesByJson(String expCode, String expNo) throws Exception {
+    public static void getOrderTracesByJson(String expCode, String expNo, WebCallBackListener listener) throws Exception {
 //        String requestData = "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
         Gson gson = new Gson();
         String requestData = gson.toJson(new OrderTraceRequestData().getRequestData(expCode, expNo));
@@ -44,10 +46,9 @@ public class OrderTraceAPI {
         params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
         params.put("DataType", "2");
 
-        String result = sendPost(ReqURL, params);
-
+//        String result = sendPost(ReqURL, params);
+        new WebService(ReqURL, params, listener).start();
         //根据公司业务处理返回的信息......
 
-        return result;
     }
 }

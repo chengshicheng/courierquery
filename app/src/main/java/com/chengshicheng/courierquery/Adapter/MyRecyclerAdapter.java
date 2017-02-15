@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.Activity;
+package com.chengshicheng.courierquery.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chengshicheng.courierquery.Activity.OnRecyclerViewItemClickListener;
+import com.chengshicheng.courierquery.Activity.OnRecyclerViewItemLongClickListener;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.R;
 import com.chengshicheng.courierquery.Web.ResposeBean.OrderTrace;

@@ -1,27 +1,17 @@
 package com.chengshicheng.courierquery.Activity;
 
-import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.chengshicheng.courierquery.Adapter.MyRecyclerAdapter;
+import com.chengshicheng.courierquery.Adapter.RecycleViewDivider;
 import com.chengshicheng.courierquery.CourierApp;
-import com.chengshicheng.courierquery.GreenDao.GreenDaoHelper;
 import com.chengshicheng.courierquery.GreenDao.OrderQuery;
 import com.chengshicheng.courierquery.R;
-import com.chengshicheng.courierquery.Utils.DialogUtils;
-import com.chengshicheng.courierquery.Utils.StringUtils;
 import com.chengshicheng.greendao.gen.OrderQueryDao;
 
 import java.util.ArrayList;

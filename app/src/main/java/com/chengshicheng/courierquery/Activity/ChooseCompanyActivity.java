@@ -55,9 +55,9 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
      */
     private static final int QUERY_SUCCESS = 2;
     /**
-     * 系统错误：服务器接口异常等
+     * 系统错误、服务器接口异常等
      */
-    private static final int SYSTEM_ERROR = 3;
+    private static final int API_EXCEPTION = 3;
 
     private Handler handler = new Handler() {
         @Override
@@ -72,7 +72,7 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                     break;
                 case QUERY_SUCCESS:
                     scanShippers = (ArrayList<ShipperBean>) msg.obj;
-                    LogUtil.PrintDebug("单号识别结果size =" + scanShippers.size());
+                    LogUtil.PrintDebug("单号识别成功，结果size =" + scanShippers.size());
                     refreshListView();
                     break;
                 default:
@@ -237,16 +237,12 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
      */
     private void doQueryCompany(final String num) {
 
-        /**
-         * 即时查询线程
-         */
-        Runnable queryTrace = new Runnable() {
-            Message message = Message.obtain();
+        try {
+            OrderDistinguishAPI.getCompanyByJson(num, new WebCallBackListener() {
+                Message message = Message.obtain();
 
-            @Override
-            public void run() {
-                try {
-                    String result = OrderDistinguishAPI.getCompanyByJson(num);
+                @Override
+                public void onSuccess(String result) {
                     LogUtil.PrintDebug(result);
                     Gson gson = new Gson();
                     OrderDistinguishResponse response = gson.fromJson(result, OrderDistinguishResponse.class);
@@ -260,15 +256,19 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
                         message.what = QUERY_FAILED;
                         message.obj = response.getCode();//失败错误码
                     }
-                } catch (Exception e) {
-                    LogUtil.PrintError("OrderDistinguishAPI Error", e);
-                    message.what = SYSTEM_ERROR;
-                } finally {
                     handler.sendMessage(message);
                 }
-            }
-        };
-        new Thread(queryTrace).start();
+
+                @Override
+                public void onFailed() {
+                    handler.sendEmptyMessage(API_EXCEPTION);
+                }
+            });
+
+        } catch (Exception e) {
+            LogUtil.PrintError("OrderDistinguishAPI Error", e);
+            handler.sendEmptyMessage(API_EXCEPTION);
+        }
     }
 
 

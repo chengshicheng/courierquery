@@ -1,4 +1,4 @@
-package com.chengshicheng.courierquery.Activity;
+package com.chengshicheng.courierquery.Adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;

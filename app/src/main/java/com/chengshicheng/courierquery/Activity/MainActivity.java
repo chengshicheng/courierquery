@@ -32,16 +32,10 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    private ImageView menu;
-    private SearchView searchView;
     private MenuItem searchItem;
 
-    private TabLayout mTabLayout;
     private Toolbar toolbar;
-    private ViewPager mViewPager;
-    private ArrayList<Fragment> fragmentsList;
 
-    private LayoutInflater mInflater;
     private List<String> mTitleList = new ArrayList<>();//页卡标题集合
 
     private int requestCode = 100;
@@ -58,18 +52,17 @@ public class MainActivity extends BaseActivity {
         //隐藏Toolbar的标题
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        menu = (ImageView) findViewById(R.id.menu);
+        ImageView menu = (ImageView) findViewById(R.id.menu);
         menu.setOnClickListener(this);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
-        mInflater = LayoutInflater.from(this);
         //添加页卡标题
         mTitleList.add("全部");
         mTitleList.add("已签收");
         mTitleList.add("未签收");
-        fragmentsList = new ArrayList<Fragment>();
+        ArrayList<Fragment> fragmentsList = new ArrayList<Fragment>();
         Bundle bundle = new Bundle();
         Fragment fragment1 = Fragment1.newInstance(
                 MainActivity.this, bundle);
@@ -121,7 +114,7 @@ public class MainActivity extends BaseActivity {
         inflater.inflate(R.menu.main_toobar_right, menu);
         searchItem = menu.findItem(R.id.menu_search);//在菜单中找到对应控件的item
 
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setInputType(InputType.TYPE_CLASS_NUMBER);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -152,7 +145,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_scan) {
-            DialogUtils.ShowToast("menu_scan");
             Intent intent = new Intent();
             intent.setClass(this, ChooseCompanyActivity.class);
             intent.putExtra("requestType", 2);
@@ -164,11 +156,7 @@ public class MainActivity extends BaseActivity {
     private class TabFragmentPagerAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> mFragmentsList;
 
-        public TabFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public TabFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentsList) {
+        private TabFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragmentsList) {
             super(fm);
             mFragmentsList = fragmentsList;
         }
@@ -231,8 +219,6 @@ public class MainActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             MenuItemCompat.collapseActionView(searchItem);//收起搜索框
-        } else {
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

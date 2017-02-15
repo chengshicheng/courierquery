@@ -1,6 +1,8 @@
 package com.chengshicheng.courierquery.Web.QueryAPI;
 
+import com.chengshicheng.courierquery.Activity.WebCallBackListener;
 import com.chengshicheng.courierquery.Utils.LogUtil;
+import com.chengshicheng.courierquery.Web.WebService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +29,7 @@ public class OrderDistinguishAPI {
      *
      * @throws Exception
      */
-    public static String getCompanyByJson(String expNo) throws Exception {
+    public static void getCompanyByJson(String expNo, WebCallBackListener listener) throws Exception {
         String requestData = "{'LogisticCode':'" + expNo + "'}";
         LogUtil.PrintDebug("单号识别RequestData:" + requestData);
 
@@ -39,10 +41,9 @@ public class OrderDistinguishAPI {
         params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
         params.put("DataType", "2");
 
-        String result = sendPost(ReqURL, params);
+//        String result = sendPost(ReqURL, params);
 
         //根据公司业务处理返回的信息......
-
-        return result;
+        new WebService(ReqURL, params, listener).start();
     }
 }

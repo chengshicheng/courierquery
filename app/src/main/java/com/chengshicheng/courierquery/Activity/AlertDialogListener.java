@@ -6,5 +6,5 @@ package com.chengshicheng.courierquery.Activity;
  */
 
 public interface AlertDialogListener {
-    public void OnPositive(String text);
+    void OnPositive(String text);
 }

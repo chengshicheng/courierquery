@@ -1,5 +1,6 @@
 package com.chengshicheng.courierquery.Web;
 
+import com.chengshicheng.courierquery.Activity.WebCallBackListener;
 import com.chengshicheng.courierquery.Utils.LogUtil;
 
 import java.io.BufferedReader;
@@ -15,10 +16,29 @@ import java.util.Map;
  * Created by chengshicheng on 2017/1/16.
  */
 
-public class WebService {
+public class WebService extends Thread {
+    private String mUrl;
+    private Map<String, String> mParams;
+    private WebCallBackListener mlistener;
+    private String result;
 
+    public WebService(String url, Map<String, String> params, WebCallBackListener listener) {
+        this.mUrl = url;
+        this.mParams = params;
+        this.mlistener = listener;
+    }
 
-    public static String sendPost(String url, final Map<String, String> params) {
+    @Override
+    public void run() {
+        try {
+            result = sendPost(mUrl, mParams);
+            mlistener.onSuccess(result);
+        } catch (Exception e) {
+            mlistener.onFailed();
+        }
+    }
+
+    public static String sendPost(String url, final Map<String, String> params) throws Exception {
         OutputStreamWriter out = null;
         BufferedReader in = null;
         StringBuilder result = new StringBuilder();
@@ -65,6 +85,7 @@ public class WebService {
             }
         } catch (Exception e) {
             LogUtil.PrintError("sendPost Error", e);
+            throw new Exception(e);
         }
         //使用finally块来关闭输出流、输入流
         finally {
@@ -76,7 +97,7 @@ public class WebService {
                     in.close();
                 }
             } catch (IOException ex) {
-                LogUtil.PrintError("close stream Error", ex);
+                throw new Exception(ex);
             }
         }
         return result.toString();
