@@ -123,14 +123,14 @@ public class ChooseCompanyActivity extends BaseActivity implements AdapterView.O
 
     private void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.back);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        toolbar.setNavigationIcon(R.drawable.back);
+//
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         listView = (ListView) findViewById(R.id.listView);
         listView.setDivider(new ColorDrawable(Color.GRAY));

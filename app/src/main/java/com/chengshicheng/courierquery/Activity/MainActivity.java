@@ -51,6 +51,8 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         //隐藏Toolbar的标题
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        View fabb = findViewById(R.id.fab);
+        fabb.setOnClickListener(this);
 
         ImageView menu = (ImageView) findViewById(R.id.menu);
         menu.setOnClickListener(this);
@@ -102,6 +104,12 @@ public class MainActivity extends BaseActivity {
             case R.id.menu:
                 DialogUtils.ShowToast("menu");
                 break;
+            case R.id.fab:
+                Intent intent = new Intent(MainActivity.this,demoActivity.class);
+                startActivity(intent);
+                break;
+
+
             default:
                 break;
 

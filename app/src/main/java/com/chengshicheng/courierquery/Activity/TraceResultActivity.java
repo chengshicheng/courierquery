@@ -72,14 +72,14 @@ public class TraceResultActivity extends BaseActivity {
 
     private void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.back);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        toolbar.setNavigationIcon(R.drawable.back);
+//
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         tvCompany = (TextView) findViewById(R.id.tvOrderCompany);
         tvOrderNum = (TextView) findViewById(R.id.tvOrderNumber);
