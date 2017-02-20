@@ -13,7 +13,7 @@
         <TextView
             android:id="@+id/tvTopLine"
             android:layout_width="0.5dp"
-            android:layout_height="12dp"
+            android:layout_height="15dp"
             android:layout_centerHorizontal="true"
             android:background="@color/timeLine"
             android:textColor="@color/blackText" />
@@ -41,8 +41,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="6dp"
-        android:paddingRight="10dp"
-        android:paddingTop="6dp">
+        android:paddingRight="9dp"
+        android:paddingTop="12dp">
 
         <TextView
             android:id="@+id/tvAcceptStation"
@@ -62,7 +62,6 @@
             android:text="2014/06/24 20:55:28"
             android:textColor="@color/blackText"
             android:textSize="12sp" />
-
 
     </RelativeLayout>
 </LinearLayout>
