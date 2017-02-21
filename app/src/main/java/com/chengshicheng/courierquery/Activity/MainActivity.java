@@ -8,10 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.transition.Explode;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +42,7 @@ public class MainActivity extends BaseActivity {
     private List<String> mTitleList = new ArrayList<>();//页卡标题集合
 
     private int requestCode = 100;
+    private android.support.v4.widget.DrawerLayout mDrawerLayout;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +55,20 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         //隐藏Toolbar的标题
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //设置导航按钮，这里设置了一个汉堡按钮
+
         View fabb = findViewById(R.id.fab);
         fabb.setOnClickListener(this);
 
-        ImageView menu = (ImageView) findViewById(R.id.menu);
-        menu.setOnClickListener(this);
+//        //设置抽屉DrawerLayout
+         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+                R.string.app_name, R.string.hello_blank_fragment);
+        mDrawerToggle.syncState();//初始化状态
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        ImageView navigation = (ImageView) findViewById(R.id.navigation);
+        navigation.setOnClickListener(this);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager);
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -103,6 +116,7 @@ public class MainActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.menu:
                 DialogUtils.ShowToast("menu");
+                mDrawerLayout.openDrawer(Gravity.LEFT);
                 break;
             case R.id.fab:
                 Intent intent = new Intent(MainActivity.this,demoActivity.class);
