@@ -10,10 +10,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:background="@color/colorPrimary"
-        app:title="@string/app_name"
-        app:titleTextColor="@color/whiteText"></android.support.v7.widget.Toolbar>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <TextView
+            android:id="@+id/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:text="条码扫描"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            />
+
+    </android.support.v7.widget.Toolbar>
 
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
